@@ -5,6 +5,7 @@ class RefImpl {
   private _value: any
   private _rawValue: any
   public dep: Set<any>
+  public __v_isRef = true
   constructor(value) {
     this._rawValue = value
     this._value = convert(value)
@@ -35,7 +36,10 @@ function trackRefValue(ref: RefImpl) {
 }
 
 export function isRef(ref) {
-  return ref instanceof RefImpl
+  // my way to implement
+  // return ref instanceof RefImpl
+  // cxr's way to implement
+  return !!ref.__v_isRef
 }
 
 export function unRef(ref) {
