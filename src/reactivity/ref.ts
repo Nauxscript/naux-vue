@@ -23,7 +23,7 @@ class RefImpl {
     triggerEffects(this.dep)
   }
 }
-
+ 
 function convert(value) {
   return isObject(value) ? reactive(value) : value
 }
@@ -32,6 +32,14 @@ function trackRefValue(ref: RefImpl) {
   if (isTracking()) {
     trackEffects(ref.dep)
   }
+}
+
+export function isRef(ref) {
+  return ref instanceof RefImpl
+}
+
+export function unRef(ref) {
+  return isRef(ref) ? ref.value : ref
 }
 
 export function ref(value) {
