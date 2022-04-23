@@ -1,7 +1,7 @@
 import { reactive } from '../reactive'
 import { effect, stop } from '../effect'
 describe('effect', () => {
-  it('happy path', () => {
+  test('happy path', () => {
     const user = reactive({
       age: 10
     })
@@ -16,7 +16,7 @@ describe('effect', () => {
     expect(nextAge).toBe(12)
   })
 
-  it('return a runner function when effect been call', () => {
+  test('return a runner function when effect been call', () => {
     let foo = 5
     const runner = effect(() => {
       foo++
@@ -28,7 +28,7 @@ describe('effect', () => {
     expect(res).toBe('foo')
   })
 
-  it('scheduler', () => {
+  test('scheduler', () => {
     // 1. effect 可以 传入第二个对象参数（object）（第一个参数为 fn），该对象参数种有一个叫 scheduler 的 function
     // 2. effect 第一次执行的时候，会执行 fn，而不执行 shceduler 
     // 3. 当 effect 中依赖的响应式对象发生 update 行为（set）时，不会执行 fn，而是执行 scheduler
@@ -58,7 +58,7 @@ describe('effect', () => {
     expect(dummy).toBe(2)
   })
 
-  it('stop', () => {
+  test('stop', () => {
     let dummy
     const obj = reactive({
       prop: 1
@@ -77,7 +77,7 @@ describe('effect', () => {
 
   })
 
-  it('onStop callback', () => {
+  test('onStop callback', () => {
     let dummy
     const onStop = vi.fn()
     const obj = reactive({
@@ -89,9 +89,9 @@ describe('effect', () => {
       onStop
     })
     stop(runner)
-    expect(onStop).toBeCalledTimes(1)
+    expect(onStop).toHaveBeenCalledTimes(1)
     runner()
-    expect(onStop).toBeCalledTimes(1)
+    expect(onStop).toHaveBeenCalledTimes(1)
 
   })
 })

@@ -4,7 +4,7 @@
 import { isReadonly, shallowReadonly } from "../reactive"
 
 describe('shallow readonly function', () => {
-  it('should not make ', () => {
+  test('should not make ', () => {
     const props = shallowReadonly({
       n: {
         foo: 1
@@ -13,7 +13,7 @@ describe('shallow readonly function', () => {
     expect(isReadonly(props)).toBe(true)
     expect(isReadonly(props.n)).toBe(false)
   })
-  it('warning when call the readonly object setter', () => {
+  test('warning when call the shallowReadonly object setter', () => {
     console.warn = vi.fn()
     const user = shallowReadonly({
       age: 1,
@@ -23,10 +23,10 @@ describe('shallow readonly function', () => {
     })
     expect(user.age).toBe(1)
     user.age++
-    expect(console.warn).toBeCalled()
+    expect(console.warn).toHaveBeenCalledTimes(1)
     expect(user.age).toBe(1)
     user.nested.score++
-    expect(console.warn).toBeCalled()
+    expect(console.warn).toHaveBeenCalledTimes(1)
     expect(user.nested.score).toBe(12)
   })
 })

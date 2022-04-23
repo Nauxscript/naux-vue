@@ -38,10 +38,16 @@ const cleanupEffect = (effect) => {
 // 一个 target 对象 对应 一个 Set ，该对应关系存在 targetMap 中
 const targetMap = new Map()
 
+export const trackEffects = (dep) => {
+  if (dep.has(activeEffect)) return;
+  dep.add(activeEffect)
+  activeEffect.deps.push(dep)
+}
+
 export const track = (target, prop) => {
   // const dep = new Set()
   // dep.add(   )
-  if (!activeEffect || activeEffect.active === false) return
+  if (!isTracking()) return
   let depsMap = targetMap.get(target)
   if (!depsMap) {
     depsMap = new Map()
@@ -52,14 +58,10 @@ export const track = (target, prop) => {
     dep = new Set()
     depsMap.set(prop, dep)
   }
-  if (dep.has(activeEffect)) return;
-  dep.add(activeEffect)
-  activeEffect.deps.push(dep)
+  trackEffects(dep)
 }
- 
-export const trigger = (target, prop) => {
-  let depsMap = targetMap.get(target)
-  let dep = depsMap.get(prop)
+
+export const triggerEffects = (dep) => {
   for (let effect of dep) {
     if (effect.scheduler) {
       effect.scheduler()
@@ -69,8 +71,19 @@ export const trigger = (target, prop) => {
   }
 }
 
+export const trigger = (target, prop) => {
+  let depsMap = targetMap.get(target)
+  let dep = depsMap.get(prop)
+  triggerEffects(dep)
+}
+
 export const stop = (runner) => {
   runner.effect.stop()
+}
+
+export function isTracking() {
+  // return shouldTrack && activeEffect !== undefined;
+  return activeEffect && (activeEffect as any).active
 }
 
 export const effect = (fn, options: any = {}) => {
