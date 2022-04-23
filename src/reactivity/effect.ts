@@ -3,7 +3,7 @@
 import { extend } from '../shared'
 let activeEffect
 
-class ReactiveEffect {
+export class ReactiveEffect {
   deps = []
   private _fn: any
   private active: boolean = true
@@ -73,6 +73,7 @@ export const triggerEffects = (dep) => {
 
 export const trigger = (target, prop) => {
   let depsMap = targetMap.get(target)
+  if (!depsMap) return
   let dep = depsMap.get(prop)
   triggerEffects(dep)
 }
