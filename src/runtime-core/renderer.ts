@@ -6,8 +6,13 @@ export function render(vnode, container) {
 }
 
 function patch(vnode, container) {
-  // judge if the type of vnode is [element], if so, should be call mount fn
+  // judge if the type of vnode is [element] or [component]
+  // processElement(vnode, container)
   processComponent(vnode, container)
+}
+
+function processElement(vnode: any, container: any) {
+  throw new Error("Function not implemented.")
 }
 
 function processComponent(vnode, container) {
