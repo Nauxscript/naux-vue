@@ -1,3 +1,4 @@
+import { isObject } from "../shared"
 import { createComponentInstance, setupComponent } from "./component"
 
 export function render(vnode, container) {
@@ -7,12 +8,38 @@ export function render(vnode, container) {
 
 function patch(vnode, container) {
   // judge if the type of vnode is [element] or [component]
-  // processElement(vnode, container)
-  processComponent(vnode, container)
+  // console.log('type', vnode.type)
+  if (typeof vnode.type === 'string') {
+    processElement(vnode, container)
+  } else if (isObject(vnode.type)) {
+    processComponent(vnode, container)
+  }
 }
 
 function processElement(vnode: any, container: any) {
-  throw new Error("Function not implemented.")
+  mountElement(vnode, container)
+}
+
+function mountElement(vnode: any, container: any) {
+  const el = document.createElement(vnode.type)
+  const { children, props } = vnode
+  if (typeof children === 'string') {
+    el.textContent = children
+  } else if(Array.isArray(children)) {
+    mountChildren(children, el)
+  }
+  for (const key in props) {
+    if (Object.prototype.hasOwnProperty.call(props, key)) {
+      el.setAttribute(key, props[key])
+    }
+  }
+  container.append(el)
+}
+
+function mountChildren(childrens, container) {
+  childrens.forEach(children => {
+    patch(children, container)
+  })
 }
 
 function processComponent(vnode, container) {
@@ -35,3 +62,5 @@ function setupRenderEffect(instance, container) {
 
   patch(subTree, container)
 }
+
+

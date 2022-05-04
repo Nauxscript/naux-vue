@@ -1,7 +1,13 @@
 import { h } from '../../lib/guide-mini-vue.esm.js'
 export const App = {
   render() {
-    return h('div', this.msg + 'Happy Path')
+    return h('div', {
+      id: 'root',
+      class: ['bg-red', 'hard']
+    }, [
+      h('p', {class: 'blue'}, 'hi'),
+      h('p', {class: 'green'}, 'Nauxscript !')
+    ])
   },
   setup() {
     return {
