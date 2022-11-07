@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": "true",
   "scripts": {
-    "test": "vitest"
+    "test": "pnpm --filter \"./packages/**\" test"
   },
   "keywords": [],
   "author": "",
