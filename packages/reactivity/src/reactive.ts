@@ -1,11 +1,16 @@
+import { track, trigger } from '..'
+
 export const reactive = (raw: any) => {
   const proxy = new Proxy(raw, {
     get(target, propertyKey) {
       const res = Reflect.get(target, propertyKey)
+      track(target, propertyKey)
       return res
     },
     set(target, propertyKey, newValue) {
       const res = Reflect.set(target, propertyKey, newValue)
+
+      trigger(target, propertyKey)
       return res
     },
   })
