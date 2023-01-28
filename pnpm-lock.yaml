@@ -5,12 +5,14 @@ importers:
   .:
     specifiers:
       '@antfu/eslint-config': ^0.34.1
+      esbuild-darwin-64: ^0.15.18
       eslint: ^8.32.0
       typescript: ^4.8.4
       vite: ^3.2.1
       vitest: ^0.24.3
     devDependencies:
       '@antfu/eslint-config': 0.34.1_yygwinqv3a2io74xmwofqb7uka
+      esbuild-darwin-64: 0.15.18
       eslint: 8.32.0
       typescript: 4.8.4
       vite: 3.2.1
@@ -811,6 +813,13 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /esbuild-darwin-64/0.15.18:
+    resolution: {integrity: sha512-2WAvs95uPnVJPuYKP0Eqx+Dl/jaYseZEUUT1sjg97TJa4oBtbAKnPnl3b5M9l51/nbx7+QAEtuummJZW0sBEmg==}
+    engines: {node: '>=12'}
+    cpu: [x64]
+    os: [darwin]
+    dev: true
 
   /esbuild-darwin-arm64/0.15.12:
     resolution: {integrity: sha512-z4zPX02tQ41kcXMyN3c/GfZpIjKoI/BzHrdKUwhC/Ki5BAhWv59A9M8H+iqaRbwpzYrYidTybBwiZAIWCLJAkw==}

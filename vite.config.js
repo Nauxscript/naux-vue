@@ -1,4 +1,4 @@
-import path from 'path'
+// import path from 'path'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
@@ -7,10 +7,10 @@ export default defineConfig({
   },
   resolve: {
     alias: [
-      {
-        find: /@mini-vue\/([\w-]*)/,
-        replacement: `${path.resolve(__dirname, 'packages')}/$1/src`,
-      },
+      // {
+      //   find: /@mini-vue\/([\w-]*)/,
+      //   replacement: `${path.resolve(__dirname, 'packages')}/$1/src`,
+      // },
     ],
   },
 })
