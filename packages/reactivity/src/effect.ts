@@ -8,7 +8,7 @@ class ReactiveEffect {
 
   run() {
     activeEffect = this
-    this._fn()
+    return this._fn()
   }
 }
 const targetMap: WeakMap<any, Map<string | symbol, Set<ReactiveEffect>>> = new WeakMap()
@@ -39,4 +39,5 @@ export const trigger = (target: any, propertyKey: string | symbol) => {
 export const effect = (fn: Function) => {
   const reactiveEffect = new ReactiveEffect(fn)
   reactiveEffect.run()
+  return reactiveEffect.run.bind(reactiveEffect)
 }

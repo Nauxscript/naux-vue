@@ -15,4 +15,16 @@ describe('effect', () => {
     target.foo++
     expect(bar).toBe(3)
   })
+
+  test('effect should return a runner function when be called', () => {
+    let foo = 1
+    const runner = effect(() => {
+      foo++
+      return 'called'
+    })
+    expect(foo).toBe(2)
+    const runnerRes = runner()
+    expect(foo).toBe(3)
+    expect(runnerRes).toBe('called')
+  })
 })
