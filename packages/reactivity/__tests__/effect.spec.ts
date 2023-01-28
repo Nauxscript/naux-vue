@@ -1,7 +1,10 @@
 import { describe, expect, test } from 'vitest'
+import { reactive } from '../'
 
 describe('effect', () => {
   test('happy path', () => {
-    expect(1).toBe(1)
+    const origin = { foo: 1 }
+    const reactiveObj = reactive(origin)
+    expect(origin).not.toBe(reactiveObj)
   })
 })
