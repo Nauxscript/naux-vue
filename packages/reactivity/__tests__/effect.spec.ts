@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from 'vitest'
-import { effect, reactive } from '../'
+import { effect, reactive, stop } from '../'
 
 describe('effect', () => {
   test('happy path', () => {
@@ -53,5 +53,46 @@ describe('effect', () => {
     run()
     // // should have run
     expect(dummy).toBe(2)
+  })
+
+  test('stop', () => {
+    let woo
+    const obj = reactive({
+      foo: 1,
+    })
+
+    const runner = effect(() => {
+      woo = obj.foo
+    })
+    obj.foo = 2
+    expect(woo).toBe(2)
+    stop(runner)
+    obj.foo = 3
+    expect(woo).toBe(2)
+    runner()
+    expect(woo).toBe(3)
+
+    // stop again, effect should be stopped
+    stop(runner)
+    obj.foo = 4
+    expect(woo).toBe(3)
+  })
+
+  test('onStop', () => {
+    let woo
+    const obj = reactive({
+      foo: 1,
+    })
+
+    const onStop = vi.fn(() => {})
+
+    const runner = effect(() => {
+      woo = obj.foo
+    }, {
+      onStop,
+    })
+    expect(woo).toBe(1)
+    stop(runner)
+    expect(onStop).toBeCalledTimes(1)
   })
 })

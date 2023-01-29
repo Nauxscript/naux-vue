@@ -1,20 +1,40 @@
+import { extend } from '@naux-vue/shared'
 let activeEffect: ReactiveEffect | undefined
 
 interface EffectOptions {
-  scheduler: Function
+  scheduler?: () => void
+  onStop?: () => void
+}
+
+export const cleanUpEffect = (effect: ReactiveEffect) => {
+  effect.deps.forEach((dep) => {
+    dep.delete(effect)
+  })
 }
 
 class ReactiveEffect {
-  private _fn: Function
-  constructor(fn: Function, public scheduler?: Function) {
-    this._fn = fn
-  }
+  onStop?: () => void
+  scheduler?: () => void
+  deps: Array<Set<ReactiveEffect>> = []
+  private _active = true
+
+  constructor(private _fn: () => unknown) {}
 
   run() {
+    this._active = true
     activeEffect = this
     return this._fn()
   }
+
+  stop() {
+    if (this._active) {
+      cleanUpEffect(this)
+      this.onStop?.()
+      this._active = false
+    }
+  }
 }
+
 const targetMap: WeakMap<any, Map<string | symbol, Set<ReactiveEffect>>> = new WeakMap()
 export const track = (target: any, propertyKey: string | symbol) => {
   let depsMap = targetMap.get(target)
@@ -29,13 +49,14 @@ export const track = (target: any, propertyKey: string | symbol) => {
     depsMap.set(propertyKey, deps)
   }
 
-  deps.add(activeEffect)
+  deps.add(activeEffect!)
+  activeEffect!.deps.push(deps)
 }
 
 export const trigger = (target: any, propertyKey: string | symbol) => {
   const depsMap = targetMap.get(target)
-  const deps = depsMap.get(propertyKey)
-  deps.forEach((activeEffect) => {
+  const deps = depsMap?.get(propertyKey)
+  deps?.forEach((activeEffect) => {
     if (activeEffect.scheduler)
       activeEffect.scheduler()
     else
@@ -43,8 +64,17 @@ export const trigger = (target: any, propertyKey: string | symbol) => {
   })
 }
 
-export const effect = (fn: Function, options?: EffectOptions) => {
-  const reactiveEffect = new ReactiveEffect(fn, options?.scheduler)
-  reactiveEffect.run()
-  return reactiveEffect.run.bind(reactiveEffect)
+export const effect = (fn: () => unknown, options?: EffectOptions) => {
+  const _effect = new ReactiveEffect(fn)
+  extend(_effect, options)
+  _effect.run()
+
+  const runner = _effect.run.bind(_effect) as any
+  runner.effect = _effect
+
+  return runner
+}
+
+export const stop = (effecFn: { effect: ReactiveEffect }) => {
+  effecFn.effect.stop()
 }

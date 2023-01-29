@@ -16,6 +16,15 @@ importers:
       vite: 3.2.1
       vitest: 0.24.3
 
+  packages/reactivity:
+    specifiers:
+      '@naux-vue/shared': workspace*
+    dependencies:
+      '@naux-vue/shared': link:../shared
+
+  packages/shared:
+    specifiers: {}
+
 packages:
 
   /@antfu/eslint-config-basic/0.34.1_eslint@8.32.0+typescript@4.8.4:
