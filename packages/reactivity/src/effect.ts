@@ -48,8 +48,9 @@ export const track = (target: any, propertyKey: string | symbol) => {
     deps = new Set()
     depsMap.set(propertyKey, deps)
   }
-
-  deps.add(activeEffect!)
+  if (!activeEffect)
+    return
+  deps.add(activeEffect)
   activeEffect!.deps.push(deps)
 }
 
