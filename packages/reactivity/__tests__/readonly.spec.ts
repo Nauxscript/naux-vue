@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { readonly } from '..'
+import { isReadonly, readonly } from '..'
 describe('readonly tests', () => {
   test('readonly', () => {
     const origin = {
@@ -18,5 +18,14 @@ describe('readonly tests', () => {
     })
     obj.boo++
     expect(console.warn).toBeCalled()
+  })
+
+  test('isReadonly helper function', () => {
+    const origin = {
+      foo: 1,
+    }
+    const obj = readonly(origin)
+    expect(isReadonly(obj)).toBe(true)
+    expect(isReadonly(origin)).toBe(false)
   })
 })
