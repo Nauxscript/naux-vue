@@ -67,7 +67,7 @@ describe('effect', () => {
     obj.foo = 2
     expect(woo).toBe(2)
     stop(runner)
-    obj.foo = 3
+    obj.foo++
     expect(woo).toBe(2)
     runner()
     expect(woo).toBe(3)
