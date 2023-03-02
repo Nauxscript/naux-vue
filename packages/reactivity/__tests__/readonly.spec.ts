@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { isReadonly, readonly } from '..'
+import { isReactive, isReadonly, readonly } from '..'
 describe('readonly tests', () => {
   test('readonly', () => {
     const origin = {
@@ -27,5 +27,15 @@ describe('readonly tests', () => {
     const obj = readonly(origin)
     expect(isReadonly(obj)).toBe(true)
     expect(isReadonly(origin)).toBe(false)
+  })
+
+  test('nested reactives', () => {
+    const original = { foo: 1, bar: { baz: 2 } }
+    const wrapped = readonly(original)
+    expect(isReadonly(wrapped)).toBe(true)
+    expect(isReactive(wrapped)).toBe(false)
+    expect(isReadonly(wrapped.bar)).toBe(true)
+    // expect(isReadonly(wrapped.bar)).toBe(true)
+    // expect(isReadonly(wrapped.bar)).toBe(true)
   })
 })
