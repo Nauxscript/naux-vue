@@ -1,5 +1,6 @@
 import { extend } from '@naux-vue/shared'
 let activeEffect: ReactiveEffect | undefined
+let shouldTrack = false
 
 interface EffectOptions {
   scheduler?: () => void
@@ -10,6 +11,7 @@ export const cleanUpEffect = (effect: ReactiveEffect) => {
   effect.deps.forEach((dep) => {
     dep.delete(effect)
   })
+  effect.deps.length = 0
 }
 
 class ReactiveEffect {
@@ -21,9 +23,15 @@ class ReactiveEffect {
   constructor(private _fn: () => unknown) {}
 
   run() {
-    this._active = true
+    if (!this._active)
+      return this._fn()
+
+    shouldTrack = true
     activeEffect = this
-    return this._fn()
+    const result = this._fn()
+    shouldTrack = false
+
+    return result
   }
 
   stop() {
@@ -37,21 +45,26 @@ class ReactiveEffect {
 
 const targetMap: WeakMap<any, Map<string | symbol, Set<ReactiveEffect>>> = new WeakMap()
 export const track = (target: any, propertyKey: string | symbol) => {
+  if (!isTracking())
+    return
   let depsMap = targetMap.get(target)
   if (!depsMap) {
     depsMap = new Map()
     targetMap.set(target, depsMap)
   }
-
   let deps = depsMap.get(propertyKey)
   if (!deps) {
     deps = new Set()
     depsMap.set(propertyKey, deps)
   }
-  if (!activeEffect)
+  if (deps.has(activeEffect!))
     return
-  deps.add(activeEffect)
+  deps.add(activeEffect!)
   activeEffect!.deps.push(deps)
+}
+
+function isTracking() {
+  return shouldTrack && activeEffect !== undefined
 }
 
 export const trigger = (target: any, propertyKey: string | symbol) => {
