@@ -1,3 +1,4 @@
+import { isObject } from '@naux-vue/shared'
 import { reactive, readonly, track, trigger } from '..'
 
 export enum ReactiveFlags {
@@ -17,7 +18,7 @@ export const createGetter = (isReadoly = false) => {
     if (!isReadoly)
       track(target, propertyKey)
 
-    if (res !== null && typeof res === 'object')
+    if (isObject(res))
       return isReadoly ? readonly(res) : reactive(res)
     return res
   }
