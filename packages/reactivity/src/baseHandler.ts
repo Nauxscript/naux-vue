@@ -1,4 +1,4 @@
-import { isObject } from '@naux-vue/shared'
+import { extend, isObject } from '@naux-vue/shared'
 import { reactive, readonly, track, trigger } from '..'
 
 export enum ReactiveFlags {
@@ -6,20 +6,23 @@ export enum ReactiveFlags {
   IS_READONLY = '__v_isReadonly',
 }
 
-export const createGetter = (isReadoly = false) => {
+export const createGetter = (isReadonly = false, isShallowReadonly = false) => {
   return function get(target: any, propertyKey: string | symbol) {
     const res = Reflect.get(target, propertyKey)
     if (propertyKey === ReactiveFlags.IS_REACTIVE)
-      return !isReadoly
+      return !isReadonly
 
     if (propertyKey === ReactiveFlags.IS_READONLY)
-      return isReadoly
+      return isReadonly
 
-    if (!isReadoly)
+    if (isShallowReadonly)
+      return res
+
+    if (!isReadonly)
       track(target, propertyKey)
 
     if (isObject(res))
-      return isReadoly ? readonly(res) : reactive(res)
+      return isReadonly ? readonly(res) : reactive(res)
     return res
   }
 }
@@ -34,6 +37,7 @@ export const createSetter = () => {
 
 const get = createGetter()
 const readonlyGet = createGetter(true)
+const shallowReadonlyGet = createGetter(true, true)
 
 export const mutableHandler = () => ({
   get,
@@ -46,4 +50,8 @@ export const readonlyHandler = () => ({
     console.warn('readonly obj cannot be set!')
     return true
   },
+})
+
+export const shallowReadonlyHandler = () => extend(readonlyHandler(), {
+  get: shallowReadonlyGet,
 })

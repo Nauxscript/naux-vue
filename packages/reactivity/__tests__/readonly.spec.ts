@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { isReactive, isReadonly, readonly } from '..'
+import { isReactive, isReadonly, readonly, shallowReadonly } from '..'
 describe('readonly tests', () => {
   test('readonly', () => {
     const origin = {
@@ -35,7 +35,14 @@ describe('readonly tests', () => {
     expect(isReadonly(wrapped)).toBe(true)
     expect(isReactive(wrapped)).toBe(false)
     expect(isReadonly(wrapped.bar)).toBe(true)
-    // expect(isReadonly(wrapped.bar)).toBe(true)
-    // expect(isReadonly(wrapped.bar)).toBe(true)
+  })
+
+  test('basic shallowReadonly', () => {
+    const original = { foo: {} }
+    const shallowProxy = shallowReadonly(original)
+    const reactiveProxy = readonly(original)
+    expect(shallowProxy).not.toBe(reactiveProxy)
+    expect(isReadonly(shallowProxy.foo)).toBe(false)
+    expect(isReadonly(reactiveProxy.foo)).toBe(true)
   })
 })
