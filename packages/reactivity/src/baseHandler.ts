@@ -10,8 +10,6 @@ export enum ReactiveFlags {
 export const createGetter = (isReadonly = false, isShallowReadonly = false) => {
   return function get(target: any, propertyKey: string | symbol) {
     const res = Reflect.get(target, propertyKey)
-    if (propertyKey === ReactiveFlags.IS_PROXY)
-      return true
 
     if (propertyKey === ReactiveFlags.IS_REACTIVE)
       return !isReadonly
