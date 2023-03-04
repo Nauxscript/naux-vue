@@ -8,7 +8,7 @@ describe('ref', () => {
     expect(val.value).toBe(1)
   })
 
-  test.only('should be reactive', () => {
+  test('should be reactive', () => {
     const val = ref(1)
     let dummy
     let calls = 0
@@ -27,7 +27,7 @@ describe('ref', () => {
     expect(dummy).toBe(2)
   })
 
-  test('should make nested properties reactive', () => {
+  test.skip('should make nested properties reactive', () => {
     const a = ref({
       count: 1,
     })
@@ -40,7 +40,7 @@ describe('ref', () => {
     expect(dummy).toBe(2)
   })
 
-  test('proxyRefs', () => {
+  test.skip('proxyRefs', () => {
     const user = {
       age: ref(10),
       name: 'xiaohong',

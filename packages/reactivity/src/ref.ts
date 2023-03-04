@@ -1,5 +1,5 @@
 import type { ReactiveEffect } from '../'
-import { effectTrack, effectTrigger, trigger } from '../'
+import { effectTrack, effectTrigger, isTracking } from '../'
 
 class RefImpl {
   public deps: Set<ReactiveEffect>
@@ -8,7 +8,8 @@ class RefImpl {
   }
 
   get value() {
-    effectTrack(this.deps)
+    if (isTracking())
+      effectTrack(this.deps)
     return this._value
   }
 

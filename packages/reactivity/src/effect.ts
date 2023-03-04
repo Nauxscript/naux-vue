@@ -76,7 +76,7 @@ export const track = (target: any, propertyKey: string | symbol) => {
   effectTrack(deps)
 }
 
-function isTracking() {
+export function isTracking() {
   return shouldTrack && activeEffect !== undefined
 }
 
