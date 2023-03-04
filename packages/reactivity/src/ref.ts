@@ -1,4 +1,12 @@
-import { createReactiveObject, mutableHandler } from '..'
+class RefImpl {
+  constructor(private _value: any) {
+
+  }
+
+  get value() {
+    return this._value
+  }
+}
 export const ref = (raw: any) => {
-  return createReactiveObject({ value: raw }, mutableHandler())
+  return new RefImpl(raw)
 }
