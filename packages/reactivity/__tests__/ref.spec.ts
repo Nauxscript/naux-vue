@@ -26,4 +26,36 @@ describe('ref', () => {
     // expect(calls).toBe(2)
     // expect(dummy).toBe(2)
   })
+
+  test.skip('should make nested properties reactive', () => {
+    const a = ref({
+      count: 1,
+    })
+    let dummy
+    effect(() => {
+      dummy = a.value.count
+    })
+    expect(dummy).toBe(1)
+    a.value.count = 2
+    expect(dummy).toBe(2)
+  })
+
+  test.skip('proxyRefs', () => {
+    const user = {
+      age: ref(10),
+      name: 'xiaohong',
+    }
+    const proxyUser = proxyRefs(user)
+    expect(user.age.value).toBe(10)
+    expect(proxyUser.age).toBe(10)
+    expect(proxyUser.name).toBe('xiaohong');
+
+    (proxyUser as any).age = 20
+    expect(proxyUser.age).toBe(20)
+    expect(user.age.value).toBe(20)
+
+    proxyUser.age = ref(10)
+    expect(proxyUser.age).toBe(10)
+    expect(user.age.value).toBe(10)
+  })
 })
