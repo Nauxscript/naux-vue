@@ -4,11 +4,15 @@ import { reactive, readonly, track, trigger } from '..'
 export enum ReactiveFlags {
   IS_REACTIVE = '__v_isReactive',
   IS_READONLY = '__v_isReadonly',
+  IS_PROXY = '__v_isProxy',
 }
 
 export const createGetter = (isReadonly = false, isShallowReadonly = false) => {
   return function get(target: any, propertyKey: string | symbol) {
     const res = Reflect.get(target, propertyKey)
+    if (propertyKey === ReactiveFlags.IS_PROXY)
+      return true
+
     if (propertyKey === ReactiveFlags.IS_REACTIVE)
       return !isReadonly
 

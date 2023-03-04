@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { isReactive, isReadonly, readonly, shallowReadonly } from '..'
+import { isProxy, isReactive, isReadonly, readonly, shallowReadonly } from '..'
 describe('readonly tests', () => {
   test('readonly', () => {
     const origin = {
@@ -20,13 +20,15 @@ describe('readonly tests', () => {
     expect(console.warn).toBeCalled()
   })
 
-  test('isReadonly helper function', () => {
+  test('isReadonly / isProxy helper function', () => {
     const origin = {
       foo: 1,
     }
     const obj = readonly(origin)
     expect(isReadonly(obj)).toBe(true)
     expect(isReadonly(origin)).toBe(false)
+    expect(isProxy(obj)).toBe(true)
+    expect(isProxy(origin)).toBe(false)
   })
 
   test('nested reactives', () => {
