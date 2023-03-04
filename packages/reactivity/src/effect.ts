@@ -14,7 +14,7 @@ export const cleanUpEffect = (effect: ReactiveEffect) => {
   effect.deps.length = 0
 }
 
-class ReactiveEffect {
+export class ReactiveEffect {
   onStop?: () => void
   scheduler?: () => void
   deps: Array<Set<ReactiveEffect>> = []
@@ -43,6 +43,20 @@ class ReactiveEffect {
   }
 }
 
+export const effectTrack = (deps: Set<ReactiveEffect>) => {
+  deps.add(activeEffect!)
+  activeEffect!.deps.push(deps)
+}
+
+export const effectTrigger = (deps: Set<ReactiveEffect>) => {
+  deps.forEach((activeEffect) => {
+    if (activeEffect.scheduler)
+      activeEffect.scheduler()
+    else
+      activeEffect.run()
+  })
+}
+
 const targetMap: WeakMap<any, Map<string | symbol, Set<ReactiveEffect>>> = new WeakMap()
 export const track = (target: any, propertyKey: string | symbol) => {
   if (!isTracking())
@@ -59,8 +73,7 @@ export const track = (target: any, propertyKey: string | symbol) => {
   }
   if (deps.has(activeEffect!))
     return
-  deps.add(activeEffect!)
-  activeEffect!.deps.push(deps)
+  effectTrack(deps)
 }
 
 function isTracking() {
@@ -70,12 +83,7 @@ function isTracking() {
 export const trigger = (target: any, propertyKey: string | symbol) => {
   const depsMap = targetMap.get(target)
   const deps = depsMap?.get(propertyKey)
-  deps?.forEach((activeEffect) => {
-    if (activeEffect.scheduler)
-      activeEffect.scheduler()
-    else
-      activeEffect.run()
-  })
+  deps && effectTrigger(deps)
 }
 
 export const effect = (fn: () => unknown, options?: EffectOptions) => {
