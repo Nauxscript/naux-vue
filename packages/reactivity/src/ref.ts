@@ -1,9 +1,14 @@
+import { isObject } from '@naux-vue/shared'
 import type { ReactiveEffect } from '../'
-import { effectTrack, effectTrigger, isTracking } from '../'
+import { effectTrack, effectTrigger, isTracking, reactive } from '../'
 
 class RefImpl {
+  private _value: any
+  private _rawValue: any
   public deps: Set<ReactiveEffect>
-  constructor(private _value: any) {
+  constructor(value: any) {
+    this._value = isObject(value) ? reactive(value) : value
+    this._rawValue = value
     this.deps = new Set()
   }
 
@@ -14,9 +19,10 @@ class RefImpl {
   }
 
   set value(val: any) {
-    if (val === this._value)
+    if (val === this._rawValue)
       return
-    this._value = val
+    this._value = (isObject(val) ? reactive(val) : val)
+    this._rawValue = val
     effectTrigger(this.deps)
   }
 }
