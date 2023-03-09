@@ -9,6 +9,7 @@ export const convert = (value) => {
 class RefImpl {
   private _value: any
   private _rawValue: any
+  public __v_isRef = true
   public deps: Set<ReactiveEffect>
   constructor(value: any) {
     this._value = convert(value)
@@ -23,7 +24,7 @@ class RefImpl {
   }
 
   set value(val: any) {
-    if (!hasChanged(this._value, val))
+    if (!hasChanged(this._rawValue, val))
       return
     this._value = convert(val)
     this._rawValue = val
@@ -36,7 +37,7 @@ export const ref = (raw: any) => {
 }
 
 export const isRef = (target: any) => {
-  return target instanceof RefImpl
+  return !!target.__v_isRef
 }
 
 export const unRef = (target: any) => {
