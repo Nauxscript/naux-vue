@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 // import { isProxy, isReactive, reactive } from '../'
-import { effect, isRef, reactive, ref, unRef } from '../'
+import { effect, isRef, proxyRefs, reactive, ref, unRef } from '../'
 
 describe('ref', () => {
   test('happy path', () => {
@@ -56,7 +56,7 @@ describe('ref', () => {
     expect(unRef(1)).toBe(1)
   })
 
-  test.skip('proxyRefs', () => {
+  test('proxyRefs', () => {
     const user = {
       age: ref(10),
       name: 'xiaohong',
