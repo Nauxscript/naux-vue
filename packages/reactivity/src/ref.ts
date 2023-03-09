@@ -34,3 +34,11 @@ class RefImpl {
 export const ref = (raw: any) => {
   return new RefImpl(raw)
 }
+
+export const isRef = (target: any) => {
+  return target instanceof RefImpl
+}
+
+export const unRef = (target: any) => {
+  return isRef(target) ? target.value : target
+}
