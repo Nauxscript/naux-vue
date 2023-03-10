@@ -44,17 +44,18 @@ export const unRef = (target: any) => {
   return isRef(target) ? target.value : target
 }
 
+const proxyRefsHandle = () => ({
+  get(target: any, propertyKey: string | symbol) {
+    return unRef(Reflect.get(target, propertyKey))
+  },
+  set(target: any, propertyKey: string | symbol, newValue: any) {
+    const targetValue = target[propertyKey]
+    if (isRef(targetValue) && !isRef(newValue))
+      return (target[propertyKey].value = newValue)
+    return Reflect.set(target, propertyKey, newValue)
+  },
+})
+
 export const proxyRefs = (raw: any) => {
-  return new Proxy(raw, {
-    get(target: any, propertyKey: string | symbol) {
-      const res = Reflect.get(target, propertyKey)
-      return unRef(res)
-    },
-    set(target: any, propertyKey: string | symbol, newValue: any) {
-      const targetValue = target[propertyKey]
-      if (isRef(targetValue) && !isRef(newValue))
-        return (target[propertyKey].value = newValue)
-      return Reflect.set(target, propertyKey, newValue)
-    },
-  })
+  return new Proxy(raw, proxyRefsHandle())
 }
