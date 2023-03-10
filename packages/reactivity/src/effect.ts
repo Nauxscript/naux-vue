@@ -16,11 +16,10 @@ export const cleanUpEffect = (effect: ReactiveEffect) => {
 
 export class ReactiveEffect {
   onStop?: () => void
-  scheduler?: () => void
   deps: Array<Set<ReactiveEffect>> = []
   private _active = true
 
-  constructor(private _fn: () => unknown) {}
+  constructor(private _fn: () => unknown, public scheduler?: () => void) {}
 
   run() {
     if (!this._active)
