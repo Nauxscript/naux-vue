@@ -2,7 +2,8 @@
   "name": "naux-vue",
   "version": "1.0.0",
   "description": "learning vue source code by implement a mini Vue framework",
-  "main": "index.js",
+  "main": "lib/mini-vue.cjs.js",
+  "module": "lib/mini-vue.esm.js",
   "private": "true",
   "scripts": {
     "build": "rollup -c",
