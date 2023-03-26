@@ -22,8 +22,19 @@ importers:
     dependencies:
       '@naux-vue/shared': link:../shared
 
+  packages/runtime-core:
+    specifiers: {}
+
   packages/shared:
     specifiers: {}
+
+  packages/vue:
+    specifiers:
+      '@naux-vue/reactivity': workspace*
+      '@naux-vue/runtime-core': workspace*
+    dependencies:
+      '@naux-vue/reactivity': link:../reactivity
+      '@naux-vue/runtime-core': link:../runtime-core
 
 packages:
 
