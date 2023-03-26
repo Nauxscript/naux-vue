@@ -1,6 +1,7 @@
 import { hasChanged, isObject } from '@naux-vue/shared'
-import type { ReactiveEffect } from '../'
-import { effectTrack, effectTrigger, isTracking, reactive } from '../'
+import type { ReactiveEffect } from './effect'
+import { effectTrack, effectTrigger, isTracking } from './effect'
+import { reactive } from './reactive'
 
 export const convert = (value) => {
   return isObject(value) ? reactive(value) : value

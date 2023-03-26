@@ -1,5 +1,11 @@
-export * from './src/reactive'
-export * from './src/effect'
-export * from './src/ref'
-export * from './src/baseHandler'
-export * from './src/computed'
+export {
+  reactive,
+  readonly,
+  shallowReadonly,
+  isReactive,
+  isReadonly,
+  isProxy,
+} from './src/reactive'
+export { effect } from './src/effect'
+export { ref } from './src/ref'
+export { computed } from './src/computed'

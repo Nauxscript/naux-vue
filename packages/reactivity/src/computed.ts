@@ -1,4 +1,5 @@
-import { ReactiveEffect } from '../'
+import { ReactiveEffect } from './effect'
+
 class ComputedRefImpl {
   private _getter: () => unknown
   private _value: unknown

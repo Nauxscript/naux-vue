@@ -1,5 +1,6 @@
 import { extend, isObject } from '@naux-vue/shared'
-import { reactive, readonly, track, trigger } from '..'
+import { track, trigger } from './effect'
+import { reactive, readonly } from './reactive'
 
 export enum ReactiveFlags {
   IS_REACTIVE = '__v_isReactive',
