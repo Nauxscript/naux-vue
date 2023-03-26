@@ -1,5 +1,6 @@
+import { isProxy } from 'util/types'
 import { describe, expect, test } from 'vitest'
-import { isProxy, isReactive, reactive } from '../'
+import { isReactive, reactive } from '../src/reactive'
 
 describe('reactive', () => {
   test('happy path', () => {

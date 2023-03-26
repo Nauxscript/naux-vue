@@ -1,5 +1,6 @@
 import { vi } from 'vitest'
-import { computed, reactive } from '../'
+import { computed } from '../src/computed'
+import { reactive } from '../src/reactive'
 
 describe('computed', () => {
   test('happy path', () => {

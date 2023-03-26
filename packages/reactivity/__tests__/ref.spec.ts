@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest'
-// import { isProxy, isReactive, reactive } from '../'
-import { effect, isRef, proxyRefs, reactive, ref, unRef } from '../'
+import { effect } from '../src/effect'
+import { reactive } from '../src/reactive'
+import { isRef, proxyRefs, ref, unRef } from '../src/ref'
 
 describe('ref', () => {
   test('happy path', () => {
