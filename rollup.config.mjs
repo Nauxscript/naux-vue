@@ -4,10 +4,10 @@ export default {
   input: './packages/vue/src/index.ts',
   output: [
     {
-      file: './packages/vue/dist/naux-vue.cjs',
+      file: './packages/vue/dist/naux-vue.cjs.js',
       format: 'cjs',
     }, {
-      file: './packages/vue/dist/naux-vue.mjs',
+      file: './packages/vue/dist/naux-vue.esm-bundler.js',
       format: 'es',
     },
   ],
