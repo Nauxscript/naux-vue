@@ -5,6 +5,8 @@
   "main": "index.js",
   "private": "true",
   "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
     "test": "vitest",
     "test-all": "pnpm --filter \"./packages/**\" test",
     "lint": "eslint .",
@@ -15,7 +17,9 @@
   "license": "ISC",
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.1",
+    "@rollup/plugin-typescript": "^11.0.0",
     "eslint": "^8.32.0",
+    "rollup": "^3.20.2",
     "typescript": "^4.8.4",
     "vite": "^3.2.1",
     "vitest": "^0.24.3"
