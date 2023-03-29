@@ -1,3 +1,4 @@
+import { isObject } from '@naux-vue/shared'
 import { createComponentInstance, setupComponent } from './component'
 
 export function render(vnode, container) {
@@ -7,11 +8,32 @@ export function render(vnode, container) {
 function patch(vnode, container) {
   // Do different processing according to different types
   // Dom element, Vue component, text, fragment, etc.
-
   // if vnode is a Component (type), go into it
-  processComponent(vnode, container)
+  if (isObject(vnode.type))
+    processComponent(vnode, container)
+  // process element dom
+  if (typeof vnode.type === 'string')
+    processElement(vnode, container)
+  // TODO: process text...
+}
 
-  // TODO: process dom, process text...
+function processElement(vnode: any, container: any) {
+  // eslint-disable-next-line no-console
+  console.log(vnode)
+
+  const { type, props, children } = vnode
+  const el = document.createElement(type as string)
+  for (const key in props)
+    el.setAttribute(key, props[key])
+  if (typeof children === 'string') {
+    el.innerText = children
+  }
+  else {
+    children.forEach((v) => {
+      patch(v, el)
+    })
+  }
+  container.append(el)
 }
 
 function processComponent(vnode: any, container: any) {
@@ -32,7 +54,6 @@ function mountComponent(vnode: any, container: any) {
 function setupRenderEffect(instance, container) {
   // get virtual node tree
   const subTree = instance.render()
-
   // recur to patch instance inner vnode tree
   patch(subTree, container)
 }
