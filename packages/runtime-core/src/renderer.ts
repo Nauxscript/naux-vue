@@ -1,4 +1,5 @@
 import { isObject } from '@naux-vue/shared'
+import { PublicInstanceProxyHandlers } from './componentPublicInstances'
 import { createComponentInstance, setupComponent } from './component'
 
 export function render(vnode, container) {
@@ -41,29 +42,22 @@ function processComponent(vnode: any, container: any) {
   mountComponent(vnode, container)
 }
 
-function mountComponent(vnode: any, container: any) {
+function mountComponent(initialVnode: any, container: any) {
   // create component instance
-  const instance = createComponentInstance(vnode)
+  const instance = createComponentInstance(initialVnode)
   // setup component: props, slots, render, etc...
   setupComponent(instance)
 
-  const proxy = new Proxy({}, {
-    get(target, key) {
-      if (key in instance.setupState)
-        return instance.setupState[key]
-      if (key === '$el')
-        return vnode.el
-    },
-  })
+  instance.proxy = new Proxy({ _: instance }, PublicInstanceProxyHandlers) as any
 
   // setup render effect
-  setupRenderEffect(instance, proxy, container)
+  setupRenderEffect(instance, initialVnode, container)
 }
 
-function setupRenderEffect(instance, proxy, container) {
+function setupRenderEffect(instance, initialVnode, container) {
   // get virtual node tree
-  const subTree = instance.render.call(proxy)
+  const subTree = instance.render.call(instance.proxy)
   // recur to patch instance inner vnode tree
   patch(subTree, container)
-  instance.vnode.el = subTree.el
+  initialVnode.el = subTree.el
 }
