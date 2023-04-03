@@ -5,13 +5,12 @@ export const App = {
     // return h('div', {}, `hello ${this.msg}`)
     // return h('div', {}, 'surprise madafaka!')
     return h('div', {}, [
-      h('p', { class: 'blue' }, 'surprise '),
-      h('p', { class: 'red' }, 'madafaka!'),
+      h('p', { class: 'blue' }, `surprise ${this.msg}`),
     ])
   },
   setup() {
     return {
-      msg: 'naux-vue',
+      msg: 'madafaka',
     }
   },
 }
