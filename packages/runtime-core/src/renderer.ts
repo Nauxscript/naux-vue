@@ -22,9 +22,10 @@ function processElement(vnode: any, container: any) {
   console.log(vnode)
 
   const { type, props, children } = vnode
-  const el = document.createElement(type as string)
+  const el = (vnode.el = document.createElement(type as string))
   for (const key in props)
     el.setAttribute(key, props[key])
+
   if (typeof children === 'string') {
     el.innerText = children
   }
@@ -43,7 +44,6 @@ function processComponent(vnode: any, container: any) {
 function mountComponent(vnode: any, container: any) {
   // create component instance
   const instance = createComponentInstance(vnode)
-
   // setup component: props, slots, render, etc...
   setupComponent(instance)
 
@@ -51,6 +51,8 @@ function mountComponent(vnode: any, container: any) {
     get(target, key) {
       if (key in instance.setupState)
         return instance.setupState[key]
+      if (key === '$el')
+        return vnode.el
     },
   })
 
@@ -63,4 +65,5 @@ function setupRenderEffect(instance, proxy, container) {
   const subTree = instance.render.call(proxy)
   // recur to patch instance inner vnode tree
   patch(subTree, container)
+  instance.vnode.el = subTree.el
 }
