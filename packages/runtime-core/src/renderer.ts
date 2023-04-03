@@ -47,13 +47,20 @@ function mountComponent(vnode: any, container: any) {
   // setup component: props, slots, render, etc...
   setupComponent(instance)
 
+  const proxy = new Proxy({}, {
+    get(target, key) {
+      if (key in instance.setupState)
+        return instance.setupState[key]
+    },
+  })
+
   // setup render effect
-  setupRenderEffect(instance, container)
+  setupRenderEffect(instance, proxy, container)
 }
 
-function setupRenderEffect(instance, container) {
+function setupRenderEffect(instance, proxy, container) {
   // get virtual node tree
-  const subTree = instance.render()
+  const subTree = instance.render.call(proxy)
   // recur to patch instance inner vnode tree
   patch(subTree, container)
 }
