@@ -14,6 +14,9 @@ export const App = {
         onClick: () => {
           console.log('click')
         },
+        onMouseover() {
+          console.log('mouseover')
+        },
       }, `surprise ${this.msg}`),
     ])
   },

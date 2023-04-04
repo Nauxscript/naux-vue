@@ -24,8 +24,13 @@ function processElement(vnode: any, container: any) {
 
   const { type, props, children } = vnode
   const el = (vnode.el = document.createElement(type as string))
-  for (const key in props)
-    el.setAttribute(key, props[key])
+  for (const key in props) {
+    if (key.match(/^on[A-Z]/)) {
+      const eventName = key.slice(2).toLowerCase()
+      el.addEventListener(eventName, props[key])
+    }
+    else { el.setAttribute(key, props[key]) }
+  }
 
   if (vnode.shapeFlag & ShapeFlags.TEXT_CHILDREN) {
     el.innerText = children
