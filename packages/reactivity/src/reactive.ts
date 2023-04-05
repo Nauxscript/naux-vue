@@ -1,6 +1,11 @@
+import { isObject } from '@naux-vue/shared'
 import { ReactiveFlags, mutableHandler, readonlyHandler, shallowReadonlyHandler } from './baseHandler'
 
 export const createReactiveObject = (raw: any, baseHandler: ProxyHandler<any>) => {
+  if (!isObject(raw)) {
+    console.error('createReactiveObject raw should be a object')
+    return raw
+  }
   return new Proxy(raw, baseHandler)
 }
 
