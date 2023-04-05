@@ -5,10 +5,13 @@ const publicPropertiesMap = {
 export const PublicInstanceProxyHandlers = {
   get({ _: instance }, key) {
     const { setupState, props } = instance
-    if (key in setupState)
+
+    const hasOwn = (target, key) => Reflect.has(target, key)
+
+    if (hasOwn(setupState, key))
       return setupState[key]
 
-    if (key in props)
+    if (hasOwn(props, key))
       return props[key]
 
     const get = publicPropertiesMap[key]
