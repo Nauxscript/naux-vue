@@ -8,6 +8,6 @@ export const Foo = {
     console.log(props)
   },
   render() {
-    return h('div', `the value of count passing from parent is: ${this.count}`)
+    return h('div', {}, `the value of count passing from parent is: ${this.count}`)
   },
 }

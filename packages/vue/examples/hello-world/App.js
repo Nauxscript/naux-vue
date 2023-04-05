@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { h } from '../../dist/naux-vue.esm-bundler.js'
+import { Foo } from './Foo.js'
 
 window.self = null
 
@@ -18,6 +19,9 @@ export const App = {
           console.log('mouseover')
         },
       }, `surprise ${this.msg}`),
+      h(Foo, {
+        count: 1,
+      }),
     ])
   },
   setup() {
