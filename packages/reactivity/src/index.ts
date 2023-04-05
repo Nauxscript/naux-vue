@@ -5,7 +5,7 @@ export {
   isReactive,
   isReadonly,
   isProxy,
-} from './src/reactive'
-export { effect } from './src/effect'
-export { ref } from './src/ref'
-export { computed } from './src/computed'
+} from './reactive'
+export { effect } from './effect'
+export { ref } from './ref'
+export { computed } from './computed'

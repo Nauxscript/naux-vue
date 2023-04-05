@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { isProxy, isReactive, isReadonly, readonly, shallowReadonly } from '..'
+import { isProxy, isReactive, isReadonly, readonly, shallowReadonly } from '../src'
 describe('readonly tests', () => {
   test('readonly', () => {
     const origin = {
