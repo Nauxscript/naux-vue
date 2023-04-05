@@ -21,8 +21,8 @@ export const App = {
       }, `surprise ${this.msg}`),
       h(Foo, {
         count: 1,
-        onAdd() {
-          console.log('parent onAdd')
+        onAdd(a, b) {
+          console.log('parent onAdd', a, b)
         },
       }),
     ])

@@ -9,7 +9,7 @@ export const Foo = {
     console.log(props)
     const handleBtnClick = () => {
       console.log('button is clicked')
-      emit('add')
+      emit('add', 1, 2)
     }
     return {
       handleBtnClick,
