@@ -27,7 +27,10 @@ importers:
       '@naux-vue/shared': link:../shared
 
   packages/runtime-core:
-    specifiers: {}
+    specifiers:
+      '@naux-vue/reactivity': workspace*
+    dependencies:
+      '@naux-vue/reactivity': link:../reactivity
 
   packages/shared:
     specifiers: {}
