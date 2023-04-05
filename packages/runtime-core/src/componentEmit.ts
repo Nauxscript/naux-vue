@@ -1,11 +1,13 @@
 export const emit = (instance, event: string, ...args) => {
-  // eslint-disable-next-line no-console
-  console.log('componentEmit', event)
   const { props } = instance
+
+  const camelize = (str: string) => str.replace(/-(\w)/g, (_, c) => {
+    return c ? c.toUpperCase() : ''
+  })
 
   const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
-  const toHandlerKey = (str: string) => (str ? `on${capitalize(str)}` : '')
-  const handler = props[toHandlerKey(capitalize(event))]
+  const toHandlerKey = (str: string) => (str ? `on${capitalize(camelize(str))}` : '')
+  const handler = props[toHandlerKey(event)]
   handler && handler(...args)
 }
