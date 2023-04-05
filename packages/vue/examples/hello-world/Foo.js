@@ -5,6 +5,7 @@ export const Foo = {
   setup(props) {
     // props = { count }
     // NB: count is unchangable
+    props.count++
     console.log(props)
   },
   render() {
