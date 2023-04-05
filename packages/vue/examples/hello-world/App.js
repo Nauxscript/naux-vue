@@ -24,6 +24,9 @@ export const App = {
         onAdd(a, b) {
           console.log('parent onAdd', a, b)
         },
+        onFooAdd(msg) {
+          console.log(`parent onFooAdd: ${msg}`)
+        },
       }),
     ])
   },

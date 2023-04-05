@@ -10,6 +10,7 @@ export const Foo = {
     const handleBtnClick = () => {
       console.log('button is clicked')
       emit('add', 1, 2)
+      emit('foo-add', 'foo add param')
     }
     return {
       handleBtnClick,
