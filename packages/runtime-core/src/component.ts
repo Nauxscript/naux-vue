@@ -1,15 +1,20 @@
 import { shallowReadonly } from '@naux-vue/reactivity'
 import { initProps } from './componentProps'
+import { emit } from './componentEmit'
 
 export function createComponentInstance(vnode: any) {
-  const coponent = {
+  const component = {
     vnode,
     type: vnode.type,
     setupState: {},
     proxy: null,
     props: {},
+    emit: () => {},
   }
-  return coponent
+
+  component.emit = emit.bind(null, component) as any
+
+  return component
 }
 
 export const setupComponent = (instance) => {
@@ -25,7 +30,9 @@ function setupStatefulComponent(instance: any) {
   const Component = instance.type
   const { setup } = Component
   if (setup) {
-    const setupResult = setup(shallowReadonly(instance.props))
+    const setupResult = setup(shallowReadonly(instance.props), {
+      emit: instance.emit,
+    })
 
     handleSetupResult(instance, setupResult)
   }
