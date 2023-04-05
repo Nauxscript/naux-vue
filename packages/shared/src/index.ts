@@ -10,3 +10,13 @@ export enum ShapeFlags {
   TEXT_CHILDREN = 1 << 2, // 0100
   ARRAY_CHILDREN = 1 << 3, // 1000
 }
+
+export const hasOwn = (target, key) => Reflect.has(target, key)
+
+export const camelize = (str: string) => str.replace(/-(\w)/g, (_, c) => {
+  return c ? c.toUpperCase() : ''
+})
+
+export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
+
+export const toHandlerKey = (str: string) => (str ? `on${capitalize(camelize(str))}` : '')
