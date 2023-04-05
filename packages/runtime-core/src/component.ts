@@ -1,16 +1,19 @@
+import { initProps } from './componentProps'
+
 export function createComponentInstance(vnode: any) {
   const coponent = {
     vnode,
     type: vnode.type,
     setupState: {},
     proxy: null,
+    props: {},
   }
   return coponent
 }
 
 export const setupComponent = (instance) => {
   // initial props
-  // TODO: initProps()
+  initProps(instance, instance.vnode.props)
   // initial slots
   // TODO: initSlots()
 
