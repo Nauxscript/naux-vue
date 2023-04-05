@@ -19,9 +19,6 @@ function patch(vnode, container) {
 }
 
 function processElement(vnode: any, container: any) {
-  // eslint-disable-next-line no-console
-  console.log(vnode)
-
   const { type, props, children } = vnode
   const el = (vnode.el = document.createElement(type as string))
   for (const key in props) {
