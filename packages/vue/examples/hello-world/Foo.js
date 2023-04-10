@@ -1,4 +1,4 @@
-import { h } from '../../dist/naux-vue.esm-bundler.js'
+import { h, renderSlots } from '../../dist/naux-vue.esm-bundler.js'
 
 /* eslint-disable no-console */
 export const Foo = {
@@ -21,10 +21,11 @@ export const Foo = {
       onClick: this.handleBtnClick,
     }, 'emit button')
     console.log(this.$slots)
+    const slots = renderSlots(this.$slots)
     return h('div', {}, [
       h('div', {}, `the value of count passing from parent is: ${this.count}`),
       button,
-      this.$slots,
+      slots,
     ])
   },
 }
