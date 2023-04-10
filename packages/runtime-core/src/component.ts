@@ -1,6 +1,7 @@
 import { shallowReadonly } from '@naux-vue/reactivity'
 import { initProps } from './componentProps'
 import { emit } from './componentEmit'
+import { initSlots } from './componentSlots'
 
 export function createComponentInstance(vnode: any) {
   const component = {
@@ -9,6 +10,7 @@ export function createComponentInstance(vnode: any) {
     setupState: {},
     proxy: null,
     props: {},
+    slots: {},
     emit: () => {},
   }
 
@@ -21,7 +23,7 @@ export const setupComponent = (instance) => {
   // initial props
   initProps(instance, instance.vnode.props)
   // initial slots
-  // TODO: initSlots()
+  initSlots(instance, instance.vnode.children)
 
   setupStatefulComponent(instance)
 }
