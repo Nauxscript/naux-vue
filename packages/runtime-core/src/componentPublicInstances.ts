@@ -2,7 +2,7 @@ import { hasOwn } from '@naux-vue/shared'
 
 const publicPropertiesMap = {
   $el: i => i.vnode.el,
-  $slots: i => i.vnode.children,
+  $slots: i => i.slots,
 }
 
 export const PublicInstanceProxyHandlers = {

@@ -1,5 +1,4 @@
 import { createVNode } from './../vnode'
-export const renderSlots = (slots) => {
-  slots = Array.isArray(slots) ? slots : [slots]
-  return createVNode('div', {}, slots)
+export const renderSlots = (slots, name: string) => {
+  return createVNode('div', {}, slots[name])
 }
