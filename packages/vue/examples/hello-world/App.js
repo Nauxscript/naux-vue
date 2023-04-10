@@ -9,6 +9,19 @@ export const App = {
     window.self = this
     // return h('div', {}, `hello ${this.msg}`)
     // return h('div', {}, 'surprise madafaka!')
+    const FooCom = h(Foo, {
+      count: 1,
+      onAdd(a, b) {
+        console.log('parent onAdd', a, b)
+      },
+      onFooAdd(msg) {
+        console.log(`parent onFooAdd: ${msg}`)
+      },
+    },
+    // [h('p', {}, 'slot content 1'), h('p', {}, 'slot content 2')],
+    h('p', {}, 'slot content 1'),
+    )
+
     return h('div', {}, [
       h('p', {
         class: 'blue',
@@ -19,15 +32,7 @@ export const App = {
           console.log('mouseover')
         },
       }, `surprise ${this.msg}`),
-      h(Foo, {
-        count: 1,
-        onAdd(a, b) {
-          console.log('parent onAdd', a, b)
-        },
-        onFooAdd(msg) {
-          console.log(`parent onFooAdd: ${msg}`)
-        },
-      }, [h('p', {}, 'slot content 1'), h('p', {}, 'slot content 2')]),
+      FooCom,
     ])
   },
   setup() {
