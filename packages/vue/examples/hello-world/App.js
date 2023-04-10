@@ -18,8 +18,12 @@ export const App = {
         console.log(`parent onFooAdd: ${msg}`)
       },
     },
+    {
+      header: h('p', {}, 'header slot'),
+      footer: h('p', {}, 'footer slot'),
+    },
     // [h('p', {}, 'slot content 1'), h('p', {}, 'slot content 2')],
-    h('p', {}, 'slot content 1'),
+    // h('p', {}, 'slot content 1'),
     )
 
     return h('div', {}, [

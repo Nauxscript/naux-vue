@@ -21,11 +21,12 @@ export const Foo = {
       onClick: this.handleBtnClick,
     }, 'emit button')
     console.log(this.$slots)
-    const slots = renderSlots(this.$slots)
+    // const slots = renderSlots(this.$slots)
     return h('div', {}, [
+      renderSlots(this.$slots, 'header'),
       h('div', {}, `the value of count passing from parent is: ${this.count}`),
       button,
-      slots,
+      renderSlots(this.$slots, 'footer'),
     ])
   },
 }
