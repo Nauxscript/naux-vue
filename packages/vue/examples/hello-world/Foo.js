@@ -20,9 +20,11 @@ export const Foo = {
     const button = h('button', {
       onClick: this.handleBtnClick,
     }, 'emit button')
+    console.log(this.$slots)
     return h('div', {}, [
       h('div', {}, `the value of count passing from parent is: ${this.count}`),
       button,
+      this.$slots,
     ])
   },
 }

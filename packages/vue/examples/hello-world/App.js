@@ -27,7 +27,7 @@ export const App = {
         onFooAdd(msg) {
           console.log(`parent onFooAdd: ${msg}`)
         },
-      }),
+      }, h('p', {}, 'slot content')),
     ])
   },
   setup() {
