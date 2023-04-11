@@ -1,7 +1,7 @@
 import { ShapeFlags } from '@naux-vue/shared'
 import { PublicInstanceProxyHandlers } from './componentPublicInstances'
 import { createComponentInstance, setupComponent } from './component'
-import { Fragment } from './vnode'
+import { Fragment, Text } from './vnode'
 
 export function render(vnode, container) {
   patch(vnode, container)
@@ -11,6 +11,9 @@ function patch(vnode, container) {
   switch (vnode.type) {
     case Fragment:
       processFragment(vnode, container)
+      break
+    case Text:
+      processText(vnode, container)
       break
 
     default:
@@ -25,6 +28,11 @@ function patch(vnode, container) {
       // TODO: process text...
       break
   }
+}
+
+function processText(vnode, container) {
+  const el = (vnode.el = document.createTextNode(vnode.children))
+  container.append(el)
 }
 
 function processFragment(vnode: any, container: any) {

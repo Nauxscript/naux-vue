@@ -1,6 +1,7 @@
 import { ShapeFlags } from '@naux-vue/shared'
 
 export const Fragment = Symbol('Fragment')
+export const Text = Symbol('Text')
 
 export const createVNode = (type, props?, children?) => {
   const vnode = {
@@ -21,6 +22,10 @@ export const createVNode = (type, props?, children?) => {
       vnode.shapeFlag |= ShapeFlags.SLOT_CHILDREN
   }
   return vnode
+}
+
+export const createTextVnode = (text: string) => {
+  return createVNode(Text, {}, text)
 }
 
 function getShapeFlag(type) {
