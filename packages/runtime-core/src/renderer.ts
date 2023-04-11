@@ -7,15 +7,27 @@ export function render(vnode, container) {
 }
 
 function patch(vnode, container) {
-  // Do different processing according to different types
-  // Dom element, Vue component, text, fragment, etc.
-  // if vnode is a Component (type), go into it
-  if (vnode.shapeFlag & ShapeFlags.STATEFUL_COMPONENT)
-    processComponent(vnode, container)
-  // process element dom
-  if (vnode.shapeFlag & ShapeFlags.ELEMENT)
-    processElement(vnode, container)
-  // TODO: process text...
+  switch (vnode.type) {
+    case 'Fragment':
+      processFragment(vnode, container)
+      break
+
+    default:
+      // Do different processing according to different types
+      // Dom element, Vue component, text, fragment, etc.
+      // if vnode is a Component (type), go into it
+      if (vnode.shapeFlag & ShapeFlags.STATEFUL_COMPONENT)
+        processComponent(vnode, container)
+      // process element dom
+      if (vnode.shapeFlag & ShapeFlags.ELEMENT)
+        processElement(vnode, container)
+      // TODO: process text...
+      break
+  }
+}
+
+function processFragment(vnode: any, container: any) {
+  mountChildren(vnode, container)
 }
 
 function processElement(vnode: any, container: any) {
