@@ -1,42 +1,9 @@
-/* eslint-disable no-console */
-import { createTextVnode, h } from '../../dist/naux-vue.esm-bundler.js'
-import { Foo } from './Foo.js'
-
-window.self = null
+import { h } from '../../dist/naux-vue.esm-bundler.js'
 
 export const App = {
   render() {
-    window.self = this
-    // return h('div', {}, `hello ${this.msg}`)
-    // return h('div', {}, 'surprise madafaka!')
-    const FooCom = h(Foo, {
-      count: 1,
-      onAdd(a, b) {
-        console.log('parent onAdd', a, b)
-      },
-      onFooAdd(msg) {
-        console.log(`parent onFooAdd: ${msg}`)
-      },
-    },
-    {
-      header: ({ scopeData }) => [h('p', {}, `header slot, data from:${scopeData}`), createTextVnode('this is a text in slot')],
-      footer: () => h('p', {}, 'footer slot'),
-    },
-      // [h('p', {}, 'slot content 1'), h('p', {}, 'slot content 2')],
-      // h('p', {}, 'slot content 1'),
-    )
-
     return h('div', {}, [
-      h('p', {
-        class: 'blue',
-        onClick: () => {
-          console.log('click')
-        },
-        onMouseover() {
-          console.log('mouseover')
-        },
-      }, `surprise ${this.msg}`),
-      FooCom,
+      h('p', {}, `surprise ${this.msg}`),
     ])
   },
   setup() {
