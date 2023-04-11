@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { h } from '../../dist/naux-vue.esm-bundler.js'
+import { createTextVnode, h } from '../../dist/naux-vue.esm-bundler.js'
 import { Foo } from './Foo.js'
 
 window.self = null
@@ -19,7 +19,7 @@ export const App = {
       },
     },
     {
-      header: ({ scopeData }) => h('p', {}, `header slot, data from:${scopeData}`),
+      header: ({ scopeData }) => [h('p', {}, `header slot, data from:${scopeData}`), createTextVnode('this is a text in slot')],
       footer: () => h('p', {}, 'footer slot'),
     },
       // [h('p', {}, 'slot content 1'), h('p', {}, 'slot content 2')],
