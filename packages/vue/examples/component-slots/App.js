@@ -4,37 +4,23 @@ import { Foo } from './Foo.js'
 
 export const App = {
   render() {
-    const FooCom = h(Foo, {
-      count: 1,
-      onAdd(a, b) {
-        console.log('parent onAdd', a, b)
+    const FooCom = h(Foo, {},
+      {
+        header: ({ scopeData }) => [h('p', {}, `header slot, data from:${scopeData}`), createTextVnode('this is a text in slot')],
+        footer: () => h('p', {}, 'footer slot'),
       },
-      onFooAdd(msg) {
-        console.log(`parent onFooAdd: ${msg}`)
-      },
-    },
-    {
-      header: ({ scopeData }) => [h('p', {}, `header slot, data from:${scopeData}`), createTextVnode('this is a text in slot')],
-      footer: () => h('p', {}, 'footer slot'),
-    },
     )
 
     return h('div', {}, [
-      h('p', {
-        class: 'blue',
-        onClick: () => {
-          console.log('click')
-        },
-        onMouseover() {
-          console.log('mouseover')
-        },
-      }, `surprise ${this.msg}`),
+      h('h2', { class: 'red' }, `${this.title} example`),
+      h('p', { class: 'blue' }, 'support basic slot \ name slot \ scope slot'),
+      h('p', { class: 'blue' }, 'and implement the fragment and text node'),
       FooCom,
     ])
   },
   setup() {
     return {
-      msg: 'madafaka',
+      title: 'component-slots',
     }
   },
 }
