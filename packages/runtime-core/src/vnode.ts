@@ -13,11 +13,10 @@ export const createVNode = (type, props?, children?) => {
   else if (Array.isArray(children))
     vnode.shapeFlag |= ShapeFlags.ARRAY_CHILDREN
 
-  // it is a slot component 
+  // it is a slot component
   if (vnode.shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
-    if (typeof vnode.children === 'object') {
+    if (typeof vnode.children === 'object')
       vnode.shapeFlag |= ShapeFlags.SLOT_CHILDREN
-    }
   }
   return vnode
 }

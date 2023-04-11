@@ -1,4 +1,4 @@
-import { ShapeFlags } from '@naux-vue/shared';
+import { ShapeFlags } from '@naux-vue/shared'
 export const initSlots = (instance, children) => {
   if (instance.vnode.shapeFlag & ShapeFlags.SLOT_CHILDREN)
     normalizeObjectSlots(children, instance.slots)
@@ -7,7 +7,7 @@ export const initSlots = (instance, children) => {
 function normalizeObjectSlots(children, slots) {
   for (const key in children) {
     const slot = children[key]
-    slots[key] = (scope) => normalizeSlotValue(slot(scope))
+    slots[key] = scope => normalizeSlotValue(slot(scope))
   }
 }
 

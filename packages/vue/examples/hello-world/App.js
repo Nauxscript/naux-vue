@@ -18,10 +18,10 @@ export const App = {
         console.log(`parent onFooAdd: ${msg}`)
       },
     },
-      {
-        header: ({ scopeData }) => h('p', {}, 'header slot, data from:' + scopeData),
-        footer: () => h('p', {}, 'footer slot'),
-      },
+    {
+      header: ({ scopeData }) => h('p', {}, `header slot, data from:${scopeData}`),
+      footer: () => h('p', {}, 'footer slot'),
+    },
       // [h('p', {}, 'slot content 1'), h('p', {}, 'slot content 2')],
       // h('p', {}, 'slot content 1'),
     )

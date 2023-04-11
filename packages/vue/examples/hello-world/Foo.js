@@ -25,7 +25,7 @@ export const Foo = {
     const scopeData = 'scope data'
     return h('div', {}, [
       renderSlots(this.$slots, 'header', {
-        scopeData
+        scopeData,
       }),
       h('div', {}, `the value of count passing from parent is: ${this.count}`),
       button,
