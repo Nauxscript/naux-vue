@@ -24,6 +24,10 @@ export function getCurrentInstance() {
   return currentInstance
 }
 
+function setCurrentInstance(instance) {
+  currentInstance = instance
+}
+
 export const setupComponent = (instance) => {
   // initial props
   initProps(instance, instance.vnode.props)
@@ -37,11 +41,11 @@ function setupStatefulComponent(instance: any) {
   const Component = instance.type
   const { setup } = Component
   if (setup) {
-    currentInstance = instance
+    setCurrentInstance(instance)
     const setupResult = setup(shallowReadonly(instance.props), {
       emit: instance.emit,
     })
-    currentInstance = null
+    setCurrentInstance(null)
     handleSetupResult(instance, setupResult)
   }
 }
