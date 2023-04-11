@@ -1,6 +1,7 @@
 import { ShapeFlags } from '@naux-vue/shared'
 import { PublicInstanceProxyHandlers } from './componentPublicInstances'
 import { createComponentInstance, setupComponent } from './component'
+import { Fragment } from './vnode'
 
 export function render(vnode, container) {
   patch(vnode, container)
@@ -8,7 +9,7 @@ export function render(vnode, container) {
 
 function patch(vnode, container) {
   switch (vnode.type) {
-    case 'Fragment':
+    case Fragment:
       processFragment(vnode, container)
       break
 

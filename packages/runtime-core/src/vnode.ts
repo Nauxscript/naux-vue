@@ -1,5 +1,7 @@
 import { ShapeFlags } from '@naux-vue/shared'
 
+export const Fragment = Symbol('Fragment')
+
 export const createVNode = (type, props?, children?) => {
   const vnode = {
     type,
