@@ -29,15 +29,19 @@ function processElement(vnode: any, container: any) {
     else { el.setAttribute(key, props[key]) }
   }
 
-  if (vnode.shapeFlag & ShapeFlags.TEXT_CHILDREN) {
+  if (vnode.shapeFlag & ShapeFlags.TEXT_CHILDREN)
     el.innerText = children
-  }
-  else {
-    children.forEach((v) => {
-      patch(v, el)
-    })
-  }
+
+  else
+    mountChildren(vnode, el)
+
   container.append(el)
+}
+
+function mountChildren(vnode, container) {
+  vnode.children.forEach((v) => {
+    patch(v, container)
+  })
 }
 
 function processComponent(vnode: any, container: any) {
