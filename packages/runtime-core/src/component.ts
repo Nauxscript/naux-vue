@@ -3,7 +3,9 @@ import { initProps } from './componentProps'
 import { emit } from './componentEmit'
 import { initSlots } from './componentSlots'
 
-export function createComponentInstance(vnode: any) {
+export function createComponentInstance(vnode: any, parent) {
+  // eslint-disable-next-line no-console
+  console.log(parent)
   const component = {
     vnode,
     type: vnode.type,
@@ -12,6 +14,8 @@ export function createComponentInstance(vnode: any) {
     props: {},
     slots: {},
     emit: () => {},
+    provides: parent ? parent.provides : {},
+    parent,
   }
 
   component.emit = emit.bind(null, component) as any
@@ -19,7 +23,7 @@ export function createComponentInstance(vnode: any) {
   return component
 }
 
-let currentInstance = null
+let currentInstance: any = null
 export function getCurrentInstance() {
   return currentInstance
 }

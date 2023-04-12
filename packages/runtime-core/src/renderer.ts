@@ -4,13 +4,13 @@ import { createComponentInstance, setupComponent } from './component'
 import { Fragment, Text } from './vnode'
 
 export function render(vnode, container) {
-  patch(vnode, container)
+  patch(vnode, container, null)
 }
 
-function patch(vnode, container) {
+function patch(vnode, container, parentComponent) {
   switch (vnode.type) {
     case Fragment:
-      processFragment(vnode, container)
+      processFragment(vnode, container, parentComponent)
       break
     case Text:
       processText(vnode, container)
@@ -21,10 +21,10 @@ function patch(vnode, container) {
       // Dom element, Vue component, text, fragment, etc.
       // if vnode is a Component (type), go into it
       if (vnode.shapeFlag & ShapeFlags.STATEFUL_COMPONENT)
-        processComponent(vnode, container)
+        processComponent(vnode, container, parentComponent)
       // process element dom
       if (vnode.shapeFlag & ShapeFlags.ELEMENT)
-        processElement(vnode, container)
+        processElement(vnode, container, parentComponent)
       // TODO: process text...
       break
   }
@@ -35,11 +35,11 @@ function processText(vnode, container) {
   container.append(el)
 }
 
-function processFragment(vnode: any, container: any) {
-  mountChildren(vnode, container)
+function processFragment(vnode: any, container: any, parentComponent) {
+  mountChildren(vnode, container, parentComponent)
 }
 
-function processElement(vnode: any, container: any) {
+function processElement(vnode: any, container: any, parentComponent) {
   const { type, props, children } = vnode
   const el = (vnode.el = document.createElement(type as string))
   for (const key in props) {
@@ -54,24 +54,24 @@ function processElement(vnode: any, container: any) {
     el.innerText = children
 
   else
-    mountChildren(vnode, el)
+    mountChildren(vnode, el, parentComponent)
 
   container.append(el)
 }
 
-function mountChildren(vnode, container) {
+function mountChildren(vnode, container, parentComponent) {
   vnode.children.forEach((v) => {
-    patch(v, container)
+    patch(v, container, parentComponent)
   })
 }
 
-function processComponent(vnode: any, container: any) {
-  mountComponent(vnode, container)
+function processComponent(vnode: any, container: any, parentComponent) {
+  mountComponent(vnode, container, parentComponent)
 }
 
-function mountComponent(initialVnode: any, container: any) {
+function mountComponent(initialVnode: any, container: any, parentComponent) {
   // create component instance
-  const instance = createComponentInstance(initialVnode)
+  const instance = createComponentInstance(initialVnode, parentComponent)
   // setup component: props, slots, render, etc...
   setupComponent(instance)
 
@@ -85,6 +85,6 @@ function setupRenderEffect(instance, initialVnode, container) {
   // get virtual node tree
   const subTree = instance.render.call(instance.proxy)
   // recur to patch instance inner vnode tree
-  patch(subTree, container)
+  patch(subTree, container, instance)
   initialVnode.el = subTree.el
 }
