@@ -30,6 +30,7 @@ const Mother = {
     return h('div', {}, [
       h('h3', {}, this.title),
       h('p', {}, `Mother Content: data from key【App】set by App component:${this.appData.msg}`),
+      h('p', {}, `Mother Content: data from key【DefaultInject】:${this.defaultInjectData.msg}`),
       h(Daughter),
     ])
   },
@@ -41,9 +42,13 @@ const Mother = {
       msg: '【Mother data】',
     })
     const appData = inject('App')
+    const defaultInjectData = inject('DefaultInject', {
+      msg: '【Default inject data】',
+    })
     return {
       title: 'this is Mother component',
       appData,
+      defaultInjectData,
     }
   },
 }
