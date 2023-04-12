@@ -12,11 +12,12 @@ export function provide(key: symbol | string | number, value) {
   }
 }
 
-export function inject(key: symbol | string | number) {
+export function inject(key: symbol | string | number, defaultValue) {
   const instance = getCurrentInstance()
   if (instance) {
     const parentProvides = instance.parent.provides
     if (key in parentProvides)
       return parentProvides[key]
+    return defaultValue
   }
 }
