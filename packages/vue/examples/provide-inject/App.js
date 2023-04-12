@@ -16,9 +16,9 @@ const Daughter = {
     const appData = inject('App')
     const appData2 = inject('App2')
     const motherData = inject(motherKey)
-    const defaultInjectData = inject('DefaultInjectByFactory', {
+    const defaultInjectData = inject('DefaultInjectByFactory', () => ({
       msg: '【Default inject data return from a factory function】',
-    })
+    }))
     return {
       title: 'this is Daughter component',
       appData,

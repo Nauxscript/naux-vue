@@ -18,6 +18,9 @@ export function inject(key: symbol | string | number, defaultValue) {
     const parentProvides = instance.parent.provides
     if (key in parentProvides)
       return parentProvides[key]
+
+    if (typeof defaultValue === 'function')
+      return defaultValue()
     return defaultValue
   }
 }
