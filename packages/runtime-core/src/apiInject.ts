@@ -12,14 +12,16 @@ export function provide(key: symbol | string | number, value) {
   }
 }
 
-export function inject(key: symbol | string | number, defaultValue) {
+export function inject(key: symbol | string | number, defaultValue?, isFactoryFuntion?: boolean) {
   const instance = getCurrentInstance()
   if (instance) {
-    const parentProvides = instance.parent.provides
+    const parentProvides = instance.parent?.provides
+    if (!parentProvides)
+      return defaultValue
     if (key in parentProvides)
       return parentProvides[key]
 
-    if (typeof defaultValue === 'function')
+    if (typeof defaultValue === 'function' && isFactoryFuntion)
       return defaultValue()
     return defaultValue
   }
