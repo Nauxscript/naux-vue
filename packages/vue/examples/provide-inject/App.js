@@ -9,17 +9,22 @@ const Daughter = {
       h('p', {}, `Daughter Content: data from key【App2】set by App component: ${this.appData2.msg}`),
       h('p', {}, `Daughter Content: data from key【App】set by Mother component: ${this.appData.msg}`),
       h('p', {}, `Daughter Content: data from key【Symbol('Mother')】set by Mother compoent: ${this.motherData.msg}`),
+      h('p', {}, `Daughter Content: data from key【DefaultInjectByFactory】set by Mother compoent: ${this.defaultInjectData.msg}`),
     ])
   },
   setup() {
     const appData = inject('App')
     const appData2 = inject('App2')
     const motherData = inject(motherKey)
+    const defaultInjectData = inject('DefaultInjectByFactory', {
+      msg: '【Default inject data return from a factory function】',
+    })
     return {
       title: 'this is Daughter component',
       appData,
       appData2,
       motherData,
+      defaultInjectData,
     }
   },
 }
