@@ -64,6 +64,7 @@ export const App = {
     return h('div', {}, [
       h('h2', { class: 'red' }, `${this.title} example`),
       h('p', { class: 'blue' }, 'implement provide & inject API, can only use in setup'),
+      h('p', {}, `App Content: data from key【DefaultInjectByFactory】:${this.injectFunctionResult.msg}`),
       h(Mother),
     ])
   },
@@ -74,8 +75,12 @@ export const App = {
     provide('App2', {
       msg: '【another App data】',
     })
+    const defaultInjectData = inject('DefaultInjectByFactory', () => ({
+      msg: '【data return from a inject function 】',
+    }), false)
     return {
       title: 'provide & inject API',
+      injectFunctionResult: defaultInjectData(),
     }
   },
 }
