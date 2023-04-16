@@ -1,0 +1,14 @@
+{
+  "name": "@naux-vue/runtime-dom",
+  "version": "1.0.0",
+  "description": "@naux-vue/runtime-dom",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
