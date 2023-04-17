@@ -1,4 +1,4 @@
-import { h, renderSlots } from '../../dist/naux-vue.esm-bundler.js'
+import { h, renderSlots } from '../dist/naux-vue.esm-bundler.js'
 
 /* eslint-disable no-console */
 export const Foo = {

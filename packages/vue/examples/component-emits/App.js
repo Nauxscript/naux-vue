@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { h } from '../../dist/naux-vue.esm-bundler.js'
+import { h } from '../dist/naux-vue.esm-bundler.js'
 import { Foo } from './Foo.js'
 
 window.self = null

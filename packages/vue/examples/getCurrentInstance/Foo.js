@@ -1,4 +1,4 @@
-import { getCurrentInstance, h } from '../../dist/naux-vue.esm-bundler.js'
+import { getCurrentInstance, h } from '../dist/naux-vue.esm-bundler.js'
 
 export const Foo = {
   name: 'Foo',

@@ -1,4 +1,4 @@
-import { h, inject, provide } from '../../dist/naux-vue.esm-bundler.js'
+import { h, inject, provide } from '../dist/naux-vue.esm-bundler.js'
 const motherKey = Symbol('Mother')
 
 const Daughter = {

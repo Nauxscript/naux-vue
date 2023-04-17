@@ -10,6 +10,11 @@ export default {
       file: './packages/vue/dist/naux-vue.esm-bundler.js',
       format: 'es',
     },
+    // for example running
+    {
+      file: './packages/vue/examples/dist/naux-vue.esm-bundler.js',
+      format: 'es',
+    },
   ],
   plugins: [typescript()],
 }

@@ -1,4 +1,4 @@
-import { h } from '../../dist/naux-vue.esm-bundler.js'
+import { h } from '../dist/naux-vue.esm-bundler.js'
 
 const examples = ['component-props', 'component-emits', 'component-slots', 'getCurrentInstance', 'provide-inject', 'custom-renderer']
 

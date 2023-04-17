@@ -1,4 +1,4 @@
-import { createRenderer } from '../../dist/naux-vue.esm-bundler.js'
+import { createRenderer } from '../dist/naux-vue.esm-bundler.js'
 import { App } from './App.js'
 
 const appContainer = new window.PIXI.Application({ width: 640, height: 640, background: '#ffffff' })

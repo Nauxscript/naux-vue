@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { createTextVnode, h } from '../../dist/naux-vue.esm-bundler.js'
+import { createTextVnode, h } from '../dist/naux-vue.esm-bundler.js'
 import { Foo } from './Foo.js'
 
 export const App = {
