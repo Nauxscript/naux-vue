@@ -16,10 +16,20 @@ function insert(el, parent) {
   parent.append(el)
 }
 
+function createTextNode(text) {
+  return document.createTextNode(text)
+}
+
+function setElementText(el, text) {
+  el.innerText = text
+}
+
 const renderer = createRenderer({
   createElement,
   patchProp,
   insert,
+  createTextNode,
+  setElementText,
 }) as any
 
 export function createApp(...args) {
