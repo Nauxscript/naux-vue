@@ -9,6 +9,8 @@ export function createRenderer(options) {
     createElement: hostCreateElement,
     patchProp: hostPatchProp,
     insert: hostInsert,
+    createTextNode: hostCreateTextNode,
+    setElementText: hostSetElementText,
   } = options
 
   function render(vnode, container) {
@@ -39,8 +41,8 @@ export function createRenderer(options) {
   }
 
   function processText(vnode, container) {
-    const el = (vnode.el = document.createTextNode(vnode.children))
-    container.append(el)
+    const el = (vnode.el = hostCreateTextNode(vnode.children))
+    hostInsert(el, container)
   }
 
   function processFragment(vnode: any, container: any, parentComponent) {
@@ -52,7 +54,7 @@ export function createRenderer(options) {
     const el = (vnode.el = hostCreateElement(type as string))
 
     if (vnode.shapeFlag & ShapeFlags.TEXT_CHILDREN)
-      el.innerText = children
+      hostSetElementText(el, children)
 
     else
       mountChildren(vnode, el, parentComponent)
