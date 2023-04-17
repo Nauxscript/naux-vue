@@ -15,42 +15,58 @@ export function createRenderer(options) {
   } = options
 
   function render(vnode, container) {
-    patch(vnode, container, null)
+    patch(null, vnode, container, null)
   }
 
-  function patch(vnode, container, parentComponent) {
-    switch (vnode.type) {
+  // n1: previous vnode
+  // n2: current vnode
+  function patch(n1, n2, container, parentComponent) {
+    switch (n2.type) {
       case Fragment:
-        processFragment(vnode, container, parentComponent)
+        processFragment(n1, n2, container, parentComponent)
         break
       case Text:
-        processText(vnode, container)
+        processText(n1, n2, container)
         break
 
       default:
       // Do different processing according to different types
       // Dom element, Vue component, text, fragment, etc.
       // if vnode is a Component (type), go into it
-        if (vnode.shapeFlag & ShapeFlags.STATEFUL_COMPONENT)
-          processComponent(vnode, container, parentComponent)
+        if (n2.shapeFlag & ShapeFlags.STATEFUL_COMPONENT)
+          processComponent(n1, n2, container, parentComponent)
         // process element dom
-        if (vnode.shapeFlag & ShapeFlags.ELEMENT)
-          processElement(vnode, container, parentComponent)
+        if (n2.shapeFlag & ShapeFlags.ELEMENT)
+          processElement(n1, n2, container, parentComponent)
         // TODO: process text...
         break
     }
   }
 
-  function processText(vnode, container) {
-    const el = (vnode.el = hostCreateTextNode(vnode.children))
+  function processText(n1, n2, container) {
+    const el = (n2.el = hostCreateTextNode(n2.children))
     hostInsert(el, container)
   }
 
-  function processFragment(vnode: any, container: any, parentComponent) {
-    mountChildren(vnode, container, parentComponent)
+  function processFragment(n1, n2: any, container: any, parentComponent) {
+    mountChildren(n2, container, parentComponent)
   }
 
-  function processElement(vnode: any, container: any, parentComponent) {
+  function processElement(n1, n2: any, container: any, parentComponent) {
+    if (!n1)
+      mountElement(n2, parentComponent, container)
+    else
+      patchElement(n1, n2, container)
+  }
+
+  function patchElement(n1, n2, container) {
+    // eslint-disable-next-line no-console
+    console.log(n1, n2, container)
+    // eslint-disable-next-line no-console
+    console.log('patchElement')
+  }
+
+  function mountElement(vnode: any, parentComponent: any, container: any) {
     const { type, props, children } = vnode
     const el = (vnode.el = hostCreateElement(type as string))
 
@@ -70,12 +86,12 @@ export function createRenderer(options) {
 
   function mountChildren(vnode, container, parentComponent) {
     vnode.children?.forEach((v) => {
-      patch(v, container, parentComponent)
+      patch(null, v, container, parentComponent)
     })
   }
 
-  function processComponent(vnode: any, container: any, parentComponent) {
-    mountComponent(vnode, container, parentComponent)
+  function processComponent(n1, n2: any, container: any, parentComponent) {
+    mountComponent(n2, container, parentComponent)
   }
 
   function mountComponent(initialVnode: any, container: any, parentComponent) {
@@ -94,15 +110,20 @@ export function createRenderer(options) {
     effect(() => {
       if (!instance.isMounted) {
         // get virtual node tree
-        const subTree = instance.render.call(instance.proxy)
+        const subTree = instance.subTree = instance.render.call(instance.proxy)
         // recur to patch instance inner vnode tree
-        patch(subTree, container, instance)
+        patch(null, subTree, container, instance)
         initialVnode.el = subTree.el
         instance.isMounted = true
       }
       else {
         // eslint-disable-next-line no-console
         console.log('updated')
+        const subTree = instance.render.call(instance.proxy)
+        const prevSubTree = instance.subTree
+        patch(prevSubTree, subTree, container, instance)
+        initialVnode.el = subTree.el
+        instance.isMounted = true
       }
     })
   }
