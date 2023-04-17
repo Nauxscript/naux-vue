@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
 import { createRenderer } from '../../dist/naux-vue.esm-bundler.js'
 import { App } from './App.js'
 
-const appContainer = new window.PIXI.Application({ width: 640, height: 640 })
+const appContainer = new window.PIXI.Application({ width: 640, height: 640, background: '#ffffff' })
 document.body.appendChild(appContainer.view)
 const renderer = createRenderer({
   createElement(type) {
@@ -14,9 +13,11 @@ const renderer = createRenderer({
         ele.drawRect(0, 0, 100, 100)
         ele.endFill()
         break
-      // case 'Container':
-      //   ele = new window.PIXI.Container()
-      //   break
+      case 'Container':
+        ele = new window.PIXI.Container()
+        ele.x = 0
+        ele.y = 0
+        break
       default:
         break
     }
@@ -27,15 +28,14 @@ const renderer = createRenderer({
     el[key] = val
   },
   insert(el, parent) {
-    console.log(el)
-    console.log(parent)
-    // if (parent.stage)
-    // parent.stage.addChild(el)
-    // else
     parent.addChild(el)
+  },
+  createTextNode(text) {
+    return new window.PIXI.Text(text)
+  },
+  setElementText(el, text) {
+    el.addChild(new window.PIXI.Text(text))
   },
 })
 
 renderer.createApp(App).mount(appContainer.stage)
-// const appContainer = document.getElementById('app')
-// createApp(App).mount(appContainer)
