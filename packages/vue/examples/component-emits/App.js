@@ -27,7 +27,7 @@ export const App = {
         onMouseover() {
           console.log('mouseover')
         },
-      }, `surprise ${this.msg}`),
+      }, 'click or mouseover me'),
       FooCom,
     ])
   },
