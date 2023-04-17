@@ -1,4 +1,5 @@
 import { ShapeFlags } from '@naux-vue/shared'
+import { effect } from './../../reactivity/src/effect'
 import { createAppAPI } from './createApp'
 import { PublicInstanceProxyHandlers } from './componentPublicInstances'
 import { createComponentInstance, setupComponent } from './component'
@@ -90,11 +91,20 @@ export function createRenderer(options) {
   }
 
   function setupRenderEffect(instance, initialVnode, container) {
-  // get virtual node tree
-    const subTree = instance.render.call(instance.proxy)
-    // recur to patch instance inner vnode tree
-    patch(subTree, container, instance)
-    initialVnode.el = subTree.el
+    effect(() => {
+      if (!instance.isMounted) {
+        // get virtual node tree
+        const subTree = instance.render.call(instance.proxy)
+        // recur to patch instance inner vnode tree
+        patch(subTree, container, instance)
+        initialVnode.el = subTree.el
+        instance.isMounted = true
+      }
+      else {
+        // eslint-disable-next-line no-console
+        console.log('updated')
+      }
+    })
   }
 
   return {
