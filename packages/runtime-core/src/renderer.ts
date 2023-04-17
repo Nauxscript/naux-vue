@@ -6,9 +6,9 @@ import { Fragment, Text } from './vnode'
 
 export function createRenderer(options) {
   const {
-    createElement,
-    patchProp,
-    insert,
+    createElement: hostCreateElement,
+    patchProp: hostPatchProp,
+    insert: hostInsert,
   } = options
 
   function render(vnode, container) {
@@ -49,8 +49,7 @@ export function createRenderer(options) {
 
   function processElement(vnode: any, container: any, parentComponent) {
     const { type, props, children } = vnode
-    // const el = (vnode.el = document.createElement(type as string))
-    const el = (vnode.el = createElement(type as string))
+    const el = (vnode.el = hostCreateElement(type as string))
 
     if (vnode.shapeFlag & ShapeFlags.TEXT_CHILDREN)
       el.innerText = children
@@ -60,20 +59,14 @@ export function createRenderer(options) {
 
     for (const key in props) {
       const val = props[key]
-      // if (key.match(/^on[A-Z]/)) {
-      //   const eventName = key.slice(2).toLowerCase()
-      //   el.addEventListener(eventName, props[key])
-      // }
-      // else { el.setAttribute(key, props[key]) }
-      patchProp(el, key, val)
+      hostPatchProp(el, key, val)
     }
 
-    // container.append(el)
-    insert(el, container)
+    hostInsert(el, container)
   }
 
   function mountChildren(vnode, container, parentComponent) {
-    vnode.children.forEach((v) => {
+    vnode.children?.forEach((v) => {
       patch(v, container, parentComponent)
     })
   }
@@ -83,7 +76,7 @@ export function createRenderer(options) {
   }
 
   function mountComponent(initialVnode: any, container: any, parentComponent) {
-  // create component instance
+    // create component instance
     const instance = createComponentInstance(initialVnode, parentComponent)
     // setup component: props, slots, render, etc...
     setupComponent(instance)
