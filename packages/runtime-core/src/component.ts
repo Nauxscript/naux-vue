@@ -1,4 +1,5 @@
 import { shallowReadonly } from '@naux-vue/reactivity'
+import { proxyRefs } from './../../reactivity/src/ref'
 import { initProps } from './componentProps'
 import { emit } from './componentEmit'
 import { initSlots } from './componentSlots'
@@ -57,7 +58,7 @@ function setupStatefulComponent(instance: any) {
 function handleSetupResult(instance, setupResult: any) {
   // if type of setupResult is object, make it to the component data
   if (typeof setupResult === 'object')
-    instance.setupState = setupResult
+    instance.setupState = proxyRefs(setupResult)
 
   // TODO: if its a function, take it as render function
 
