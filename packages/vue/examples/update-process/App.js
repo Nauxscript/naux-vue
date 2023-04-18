@@ -15,6 +15,9 @@ export const App = {
       h('p', {
       }, 'element with props, check it in devtool element panel'),
       h('button', {
+        onClick: this.handleAdd,
+      }, ' +1s '),
+      h('button', {
         onClick: this.handleChangeClass,
       }, 'change container class name'),
       h('button', {
