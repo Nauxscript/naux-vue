@@ -59,11 +59,34 @@ export function createRenderer(options) {
       patchElement(n1, n2, container)
   }
 
+  const EMPTY_OBJ = {}
+
   function patchElement(n1, n2, container) {
     // eslint-disable-next-line no-console
     console.log(n1, n2, container)
     // eslint-disable-next-line no-console
     console.log('patchElement')
+    const oldProps = n1.props || EMPTY_OBJ
+    const newProps = n2.props || EMPTY_OBJ
+    n2.el = n1.el
+    patchProps(n2.el, oldProps, newProps)
+  }
+
+  function patchProps(el, oldProps, newProps) {
+    if (oldProps !== newProps) {
+      for (const key in newProps) {
+        const prevVal = oldProps[key]
+        const nextVal = newProps[key]
+        hostPatchProp(el, key, prevVal, nextVal)
+      }
+
+      if (oldProps !== EMPTY_OBJ) {
+        for (const key in oldProps) {
+          if (!(key in newProps))
+            hostPatchProp(el, key, oldProps[key], null)
+        }
+      }
+    }
   }
 
   function mountElement(vnode: any, parentComponent: any, container: any) {
@@ -78,7 +101,7 @@ export function createRenderer(options) {
 
     for (const key in props) {
       const val = props[key]
-      hostPatchProp(el, key, val)
+      hostPatchProp(el, key, null, val)
     }
 
     hostInsert(el, container)
@@ -123,7 +146,6 @@ export function createRenderer(options) {
         const prevSubTree = instance.subTree
         patch(prevSubTree, subTree, container, instance)
         initialVnode.el = subTree.el
-        instance.isMounted = true
       }
     })
   }

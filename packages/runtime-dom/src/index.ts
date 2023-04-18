@@ -4,12 +4,25 @@ function createElement(type) {
   return document.createElement(type)
 }
 
-function patchProp(el, key, val) {
+function patchProp(el, key, oldVal, newVal) {
   if (key.match(/^on[A-Z]/)) {
     const eventName = key.slice(2).toLowerCase()
-    el.addEventListener(eventName, val)
+    el.addEventListener(eventName, newVal)
   }
-  else { el.setAttribute(key, val) }
+  else {
+    // eslint-disable-next-line no-console
+    console.log(oldVal)
+    // eslint-disable-next-line no-console
+    console.log(newVal)
+    // eslint-disable-next-line no-console
+    console.log('------------')
+    if (oldVal !== newVal) {
+      if (newVal === null || newVal === undefined)
+        el.removeAttribute(key, newVal)
+      else
+        el.setAttribute(key, newVal)
+    }
+  }
 }
 
 function insert(el, parent) {
