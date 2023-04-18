@@ -6,6 +6,7 @@ export const App = {
   render() {
     return h('div', {
       id: 'testing',
+      class: this.className,
       ...this.data,
     }, [
       h('h2', { class: 'red' }, `${this.title} example`),
@@ -13,6 +14,9 @@ export const App = {
       h('p', {}, `👓: ${this.count}s`),
       h('p', {
       }, 'element with props, check it in devtool element panel'),
+      h('button', {
+        onClick: this.handleChangeClass,
+      }, 'change container class name'),
       h('button', {
         onClick: this.handleChangeFoo,
       }, 'foo change to damn foo'),
@@ -30,6 +34,8 @@ export const App = {
       foo: 'foo',
       bar: 'bar',
     })
+    const className = ref('border-red')
+
     const handleAdd = () => {
       count.value++
       console.log('plus a sec')
@@ -45,6 +51,12 @@ export const App = {
       console.log('foo change to null')
     }
 
+    const handleChangeClass = () => {
+      if (className.value === 'border-red')
+        className.value = 'border-blue'
+      else className.value = 'border-red'
+    }
+
     const handleChangeData = () => {
       data.value = {
         foo: 'damn good foo',
@@ -56,10 +68,12 @@ export const App = {
       title: 'component update process',
       count,
       data,
+      className,
       handleAdd,
       handleChangeFoo,
       handleChangeFooToNull,
       handleChangeData,
+      handleChangeClass,
     }
   },
 }
