@@ -1,5 +1,5 @@
-import { ShapeFlags } from '@naux-vue/shared'
-import { effect } from './../../reactivity/src/effect'
+import { EMPTY_OBJ, ShapeFlags } from '@naux-vue/shared'
+import { effect } from '@naux-vue/reactivity/src/effect'
 import { createAppAPI } from './createApp'
 import { PublicInstanceProxyHandlers } from './componentPublicInstances'
 import { createComponentInstance, setupComponent } from './component'
@@ -58,8 +58,6 @@ export function createRenderer(options) {
     else
       patchElement(n1, n2, container)
   }
-
-  const EMPTY_OBJ = {}
 
   function patchElement(n1, n2, container) {
     // eslint-disable-next-line no-console
@@ -142,8 +140,8 @@ export function createRenderer(options) {
       else {
         // eslint-disable-next-line no-console
         console.log('updated')
-        const subTree = instance.render.call(instance.proxy)
         const prevSubTree = instance.subTree
+        const subTree = instance.subTree = instance.render.call(instance.proxy)
         patch(prevSubTree, subTree, container, instance)
         initialVnode.el = subTree.el
       }
