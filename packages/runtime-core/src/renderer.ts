@@ -57,18 +57,18 @@ export function createRenderer(options) {
     if (!n1)
       mountElement(n2, parentComponent, container)
     else
-      patchElement(n1, n2)
+      patchElement(n1, n2, parentComponent)
   }
 
-  function patchElement(n1, n2) {
+  function patchElement(n1, n2, parentComponent) {
     const oldProps = n1.props || EMPTY_OBJ
     const newProps = n2.props || EMPTY_OBJ
     n2.el = n1.el
     patchProps(n2.el, oldProps, newProps)
-    patchChildren(n1, n2, n2.el)
+    patchChildren(n1, n2, n2.el, parentComponent)
   }
 
-  function patchChildren(n1, n2, container) {
+  function patchChildren(n1, n2, container, parentComponent) {
     const { shapeFlag: oldShapeFlag, children: c1 } = n1
     const { shapeFlag, children: c2 } = n2
     if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
@@ -76,13 +76,18 @@ export function createRenderer(options) {
       if (oldShapeFlag & ShapeFlags.ARRAY_CHILDREN) {
         // remove old children
         unmountChildren(c1)
+      }
+
+      if (c1 !== c2) {
         // set new text children
         hostSetElementText(container, c2)
       }
-
+    }
+    else {
       if (oldShapeFlag & ShapeFlags.TEXT_CHILDREN) {
-        if (c1 !== c2)
-          hostSetElementText(container, c2)
+        // empty the old text
+        hostSetElementText(container, '')
+        mountChildren(n2, container, parentComponent)
       }
     }
   }
