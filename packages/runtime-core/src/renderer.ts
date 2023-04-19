@@ -79,6 +79,11 @@ export function createRenderer(options) {
         // set new text children
         hostSetElementText(container, c2)
       }
+
+      if (oldShapeFlag & ShapeFlags.TEXT_CHILDREN) {
+        if (c1 !== c2)
+          hostSetElementText(container, c2)
+      }
     }
   }
 
