@@ -6,7 +6,7 @@ const nextChildren = 'nextChildren'
 export const Array2Text = {
   setup() {
     const isChange = ref(false)
-    window.isChange = isChange
+    window.att = isChange
     return {
       isChange,
     }

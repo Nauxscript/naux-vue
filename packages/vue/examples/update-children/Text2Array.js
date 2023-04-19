@@ -6,7 +6,7 @@ const prevChildren = 'prevChildren'
 export const Text2Array = {
   setup() {
     const isChange = ref(false)
-    window.isChange = isChange
+    window.tta = isChange
     return {
       isChange,
     }

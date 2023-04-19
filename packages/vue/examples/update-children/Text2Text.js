@@ -6,7 +6,7 @@ const prevChildren = 'prevChildren'
 export const Text2Text = {
   setup() {
     const isChange = ref(false)
-    window.isChange = isChange
+    window.ttt = isChange
     return {
       isChange,
     }

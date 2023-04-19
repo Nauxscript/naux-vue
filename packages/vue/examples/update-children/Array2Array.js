@@ -6,7 +6,7 @@ const nextChildren = [h('p', {}, 'nextChildren item p 1'), h('p', {}, 'nextChild
 export const Array2Array = {
   setup() {
     const isChange = ref(false)
-    window.isChange = isChange
+    window.ata = isChange
     return {
       isChange,
     }
