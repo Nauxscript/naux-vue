@@ -1,6 +1,6 @@
 import { h } from '../dist/naux-vue.esm-bundler.js'
 
-const examples = ['component-props', 'component-emits', 'component-slots', 'getCurrentInstance', 'provide-inject', 'custom-renderer', 'update-process']
+const examples = ['component-props', 'component-emits', 'component-slots', 'getCurrentInstance', 'provide-inject', 'custom-renderer', 'update-process', 'update-children']
 
 export const App = {
   render() {
@@ -10,13 +10,15 @@ export const App = {
       })
     }
     return h('div', {}, [
-      h('p', {}, `surprise ${this.msg}`),
+      h('p', {}, `Welcome to ${this.title}`),
+      h('p', {}, `${this.title} is a mini version of VUE to explore HOW VUE3 WORK`),
+      h('p', {}, 'there is some examples of vue component core features below:'),
       h('ul', {}, examplesList()),
     ])
   },
   setup() {
     return {
-      msg: 'madafaka',
+      title: 'Naux-vue',
       examples,
     }
   },
