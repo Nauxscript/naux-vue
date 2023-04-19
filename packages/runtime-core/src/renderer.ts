@@ -12,6 +12,7 @@ export function createRenderer(options) {
     insert: hostInsert,
     createTextNode: hostCreateTextNode,
     setElementText: hostSetElementText,
+    remove: hostRemove,
   } = options
 
   function render(vnode, container) {
@@ -56,18 +57,29 @@ export function createRenderer(options) {
     if (!n1)
       mountElement(n2, parentComponent, container)
     else
-      patchElement(n1, n2, container)
+      patchElement(n1, n2)
   }
 
-  function patchElement(n1, n2, container) {
-    // eslint-disable-next-line no-console
-    console.log(n1, n2, container)
-    // eslint-disable-next-line no-console
-    console.log('patchElement')
+  function patchElement(n1, n2) {
     const oldProps = n1.props || EMPTY_OBJ
     const newProps = n2.props || EMPTY_OBJ
     n2.el = n1.el
     patchProps(n2.el, oldProps, newProps)
+    patchChildren(n1, n2, n2.el)
+  }
+
+  function patchChildren(n1, n2, container) {
+    const { shapeFlag: oldShapeFlag, children: c1 } = n1
+    const { shapeFlag, children: c2 } = n2
+    if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
+      // change array children to text children
+      if (oldShapeFlag & ShapeFlags.ARRAY_CHILDREN) {
+        // remove old children
+        unmountChildren(c1)
+        // set new text children
+        hostSetElementText(container, c2)
+      }
+    }
   }
 
   function patchProps(el, oldProps, newProps) {
@@ -103,6 +115,13 @@ export function createRenderer(options) {
     }
 
     hostInsert(el, container)
+  }
+
+  function unmountChildren(children) {
+    for (let i = 0; i < children.length; i++) {
+      const el = children[i].el
+      hostRemove(el)
+    }
   }
 
   function mountChildren(vnode, container, parentComponent) {

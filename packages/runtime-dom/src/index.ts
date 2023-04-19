@@ -37,12 +37,18 @@ function setElementText(el, text) {
   el.innerText = text
 }
 
+function remove(el) {
+  const parent = el.parentNode
+  parent && parent.removeChild(el)
+}
+
 const renderer = createRenderer({
   createElement,
   patchProp,
   insert,
   createTextNode,
   setElementText,
+  remove,
 }) as any
 
 export function createApp(...args) {
