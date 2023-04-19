@@ -34,7 +34,10 @@ function createTextNode(text) {
 }
 
 function setElementText(el, text) {
-  el.innerText = text
+  // what's the difference between textContent and innerText (and innerHTML)
+  // the most important defference is, use innerText to change a dom content will trigger reflow, but textContent woundn't.
+  // refer to https://juejin.cn/post/7044436311033249805
+  el.textContent = text
 }
 
 function remove(el) {
