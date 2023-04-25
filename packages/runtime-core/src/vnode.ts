@@ -5,6 +5,7 @@ export const Text = Symbol('Text')
 
 export const createVNode = (type, props?, children?) => {
   const vnode = {
+    el: null,
     type,
     props: props || {},
     children,

@@ -25,8 +25,10 @@ function patchProp(el, key, oldVal, newVal) {
   }
 }
 
-function insert(el, parent) {
-  parent.append(el)
+function insert(child, parent, anchor = null) {
+  // parent.append(child)
+  // if anchor is null, its will be the same as calling append
+  parent.insertBefore(child, anchor)
 }
 
 function createTextNode(text) {
