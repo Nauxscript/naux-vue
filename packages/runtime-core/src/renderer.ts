@@ -89,7 +89,32 @@ export function createRenderer(options) {
         hostSetElementText(container, '')
         mountChildren(n2, container, parentComponent)
       }
+      else {
+        // array to array
+        patchKeyedChildren(c1, c2, container, parentComponent)
+      }
     }
+  }
+
+  function patchKeyedChildren(c1, c2, container, parentcomponent) {
+    let i = 0
+    const e1 = c1.length - 1
+    const e2 = c2.length - 1
+    while (i <= e1 && i <= e2) {
+      const n1 = c1[i]
+      const n2 = c2[i]
+      if (isSameNodeType(n1, n2))
+        patch(n1, n2, container, parentcomponent)
+      else
+        break
+      i++
+    }
+    // eslint-disable-next-line no-console
+    console.log(i)
+  }
+
+  function isSameNodeType(c1, c2) {
+    return c1.type === c2.type && c1.key === c2.key
   }
 
   function patchProps(el, oldProps, newProps) {
