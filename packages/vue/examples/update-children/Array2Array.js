@@ -7,20 +7,20 @@ import { h, ref } from '../dist/naux-vue.esm-bundler.js'
 // case 1: starting on left
 // before: ( A B ) C
 // after: ( A B ) D E
-const prevChildren = [h('p', {}, 'A'), h('p', {}, 'B'), h('p', {}, 'C')]
-const nextChildren = [h('p', {}, 'A'), h('p', {}, 'B'), h('p', {}, 'D'), h('p', {}, 'E')]
+const prevChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'C' }, 'C')]
+const nextChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'D' }, 'D'), h('p', { key: 'E' }, 'E')]
 
 // case 2: starting on right
 // before: A ( B C )
 // after: D E ( B C )
-// const prevChildren = [h('p', {}, 'A'), h('p', {}, 'B'), h('p', {}, 'C')]
-// const nextChildren = [h('p', {}, 'D'), h('p', {}, 'E'), h('p', {}, 'B'), h('p', {}, 'C')]
+// const prevChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'C' }, 'C')]
+// const nextChildren = [h('p', { key: 'D' }, 'D'), h('p', { key: 'E' }, 'E'), h('p', { key: 'B' }, 'B'), h('p', { key: 'C' }, 'C')]
 
 // case 3: prevChildren's number is more than nextChildren's
 // before: ( A B ) C
 // after: ( A B )
-// const prevChildren = [h('p', {}, 'A'), h('p', {}, 'B'), h('p', {}, 'C')]
-// const nextChildren = [h('p', {}, 'A'), h('p', {}, 'B')]
+// const prevChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'C' }, 'C')]
+// const nextChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B')]
 
 export const Array2Array = {
   setup() {
