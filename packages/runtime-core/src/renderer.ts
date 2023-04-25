@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { EMPTY_OBJ, ShapeFlags } from '@naux-vue/shared'
 import { effect } from '@naux-vue/reactivity/src/effect'
 import { createAppAPI } from './createApp'
@@ -98,8 +99,8 @@ export function createRenderer(options) {
 
   function patchKeyedChildren(c1, c2, container, parentcomponent) {
     let i = 0
-    const e1 = c1.length - 1
-    const e2 = c2.length - 1
+    let e1 = c1.length - 1
+    let e2 = c2.length - 1
     while (i <= e1 && i <= e2) {
       const n1 = c1[i]
       const n2 = c2[i]
@@ -109,12 +110,23 @@ export function createRenderer(options) {
         break
       i++
     }
-    // eslint-disable-next-line no-console
-    console.log(i)
+    console.log('now i is:', i)
+    while (e1 >= i && e2 >= i) {
+      const n1 = c1[e1]
+      const n2 = c2[e2]
+      if (isSameNodeType(n1, n2))
+        patch(n1, n2, container, parentcomponent)
+      else
+        break
+      e1--
+      e2--
+    }
+    console.log('now e1 is:', e1)
+    console.log('now e2 is:', e2)
   }
 
-  function isSameNodeType(c1, c2) {
-    return c1.type === c2.type && c1.key === c2.key
+  function isSameNodeType(n1, n2) {
+    return n1.type === n2.type && n1.key === n2.key
   }
 
   function patchProps(el, oldProps, newProps) {
@@ -192,7 +204,6 @@ export function createRenderer(options) {
         instance.isMounted = true
       }
       else {
-        // eslint-disable-next-line no-console
         console.log('updated')
         const prevSubTree = instance.subTree
         const subTree = instance.subTree = instance.render.call(instance.proxy)

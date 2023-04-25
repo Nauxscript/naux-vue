@@ -11,11 +11,11 @@ function patchProp(el, key, oldVal, newVal) {
   }
   else {
     // eslint-disable-next-line no-console
-    console.log(oldVal)
+    // console.log(oldVal)
     // eslint-disable-next-line no-console
-    console.log(newVal)
+    // console.log(newVal)
     // eslint-disable-next-line no-console
-    console.log('------------')
+    // console.log('------------')
     if (oldVal !== newVal) {
       if (newVal === null || newVal === undefined)
         el.removeAttribute(key, newVal)
