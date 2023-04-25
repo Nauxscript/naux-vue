@@ -123,6 +123,10 @@ export function createRenderer(options) {
     }
     console.log('now e1 is:', e1)
     console.log('now e2 is:', e2)
+    if (i > e1) {
+      if (i <= e2)
+        patch(null, c2[i], container, parentcomponent)
+    }
   }
 
   function isSameNodeType(n1, n2) {
