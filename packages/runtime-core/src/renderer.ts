@@ -79,19 +79,21 @@ export function createRenderer(options) {
         unmountChildren(c1)
       }
 
+      // change text children to text children (content changed)
       if (c1 !== c2) {
         // set new text children
         hostSetElementText(container, c2)
       }
     }
     else {
+      // change text children to array children
       if (oldShapeFlag & ShapeFlags.TEXT_CHILDREN) {
         // empty the old text
         hostSetElementText(container, '')
         mountChildren(n2, container, parentComponent, anchor)
       }
       else {
-        // array to array
+        // change array children to array children
         patchKeyedChildren(c1, c2, container, parentComponent, anchor)
       }
     }
@@ -124,6 +126,7 @@ export function createRenderer(options) {
     console.log('now e1 is:', e1)
     console.log('now e2 is:', e2)
     if (i > e1) {
+      // new array children is longer than the old's
       if (i <= e2) {
         const nextPos = e2 + 1
         const anchor = nextPos > c2.length - 1 ? null : c2[nextPos].el
