@@ -101,8 +101,9 @@ export function createRenderer(options) {
 
   function patchKeyedChildren(c1, c2, container, parentcomponent, parentAnchor) {
     let i = 0
+    const l2 = c2.length
     let e1 = c1.length - 1
-    let e2 = c2.length - 1
+    let e2 = l2 - 1
     while (i <= e1 && i <= e2) {
       const n1 = c1[i]
       const n2 = c2[i]
@@ -129,7 +130,7 @@ export function createRenderer(options) {
       // new array children is longer than the old's
       if (i <= e2) {
         const nextPos = e2 + 1
-        const anchor = nextPos > c2.length - 1 ? null : c2[nextPos].el
+        const anchor = nextPos > l2 - 1 ? null : c2[nextPos].el
         while (i <= e2) {
           patch(null, c2[i], container, anchor, parentcomponent)
           i++
