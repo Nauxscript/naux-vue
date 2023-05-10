@@ -130,7 +130,10 @@ export function createRenderer(options) {
       if (i <= e2) {
         const nextPos = e2 + 1
         const anchor = nextPos > c2.length - 1 ? null : c2[nextPos].el
-        patch(null, c2[i], container, anchor, parentcomponent)
+        while (i <= e2) {
+          patch(null, c2[i], container, anchor, parentcomponent)
+          i++
+        }
       }
     }
   }
