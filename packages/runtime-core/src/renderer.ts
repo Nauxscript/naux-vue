@@ -126,15 +126,20 @@ export function createRenderer(options) {
     }
     console.log('now e1 is:', e1)
     console.log('now e2 is:', e2)
-    if (i > e1) {
+    if (i > e1 && i <= e2) {
       // new array children is longer than the old's
-      if (i <= e2) {
-        const nextPos = e2 + 1
-        const anchor = nextPos > l2 - 1 ? null : c2[nextPos].el
-        while (i <= e2) {
-          patch(null, c2[i], container, anchor, parentcomponent)
-          i++
-        }
+      const nextPos = e2 + 1
+      const anchor = nextPos > l2 - 1 ? null : c2[nextPos].el
+      while (i <= e2) {
+        patch(null, c2[i], container, anchor, parentcomponent)
+        i++
+      }
+    }
+    else if (i > e2) {
+      console.log('??')
+      while (i <= e1) {
+        hostRemove(c1[i].el)
+        i++
       }
     }
   }
