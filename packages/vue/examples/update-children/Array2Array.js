@@ -26,9 +26,15 @@ import { h, ref } from '../dist/naux-vue.esm-bundler.js'
 
 // case 1.2 introducing a new variable [anchor] to insert the new children into specific position
 // before: ( A B )
-// after: C ( A B )
-const prevChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B')]
-const nextChildren = [h('p', { key: 'C' }, 'C'), h('p', { key: 'D' }, 'D'), h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B')]
+// after: C D ( A B )
+// const prevChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B')]
+// const nextChildren = [h('p', { key: 'C' }, 'C'), h('p', { key: 'D' }, 'D'), h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B')]
+
+// case 1.3
+// before: C D ( A B )
+// after: ( A B )
+const prevChildren = [h('p', { key: 'C' }, 'C'), h('p', { key: 'D' }, 'D'), h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B')]
+const nextChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B')]
 
 export const Array2Array = {
   setup() {
