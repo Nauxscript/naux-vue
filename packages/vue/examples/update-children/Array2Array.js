@@ -37,10 +37,18 @@ import { h, ref } from '../dist/naux-vue.esm-bundler.js'
 // const nextChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B')]
 
 // case 2 handle with the shortest changed children
+
+// case 2.1
 // before: A B ( C D ) E F G
 // after: A B ( D H ) E F G
+// const prevChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'C' }, 'C'), h('p', { key: 'D', id: 'new-id' }, 'D'), h('p', { key: 'E' }, 'E'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
+// const nextChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'D', id: 'new-id' }, 'D'), h('p', { key: 'H' }, 'H'), h('p', { key: 'E' }, 'E'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
+
+// case 2.1
+// before: A B ( C D E ) F G
+// after: A B ( D C ) F G
 const prevChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'C' }, 'C'), h('p', { key: 'D', id: 'new-id' }, 'D'), h('p', { key: 'E' }, 'E'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
-const nextChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'D', id: 'new-id' }, 'D'), h('p', { key: 'H' }, 'H'), h('p', { key: 'E' }, 'E'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
+const nextChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'D', id: 'new-id' }, 'D'), h('p', { key: 'C' }, 'C'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
 
 export const Array2Array = {
   setup() {
