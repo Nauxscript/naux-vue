@@ -136,10 +136,41 @@ export function createRenderer(options) {
       }
     }
     else if (i > e2) {
-      console.log('??')
       while (i <= e1) {
         hostRemove(c1[i].el)
         i++
+      }
+    }
+    else {
+      // handle with the most complicated case:
+      // after diff both ends, can find the shortest changed children,
+      // and should patch the changed children, remove the deleted children and add the new's
+      const s1 = i
+      const s2 = i
+
+      // setup a key map of the changed part of new children
+      const newChillKey2IndexMap = new Map()
+      for (let i = s2; i <= e2; i++)
+        newChillKey2IndexMap.set(c2[i].key, i)
+
+      for (let i = s1; i < e1; i++) {
+        const prevNode = c1[i]
+        let index
+        if (prevNode.key != null)
+          index = newChillKey2IndexMap.get(prevNode.key)
+
+        for (let j = s2; j <= e2; j++) {
+          if (isSameNodeType(prevNode, c2[j])) {
+            // patch(oldOne)
+            index = j
+            break
+          }
+        }
+
+        if (index !== undefined)
+          patch(prevNode, c2[index], container, null, parentcomponent)
+        else
+          hostRemove(prevNode.el)
       }
     }
   }
