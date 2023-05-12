@@ -148,29 +148,45 @@ export function createRenderer(options) {
       const s1 = i
       const s2 = i
 
+      // if all the items of the new changed children have been patched,
+      // the rest of old children should be remove
+      // eg: A B C D E F G => A B D C F G
+      const need2PatchChildrenCount = e2 - i + 1
+      let patchedTime = 0
+
       // setup a key map of the changed part of new children
       const newChillKey2IndexMap = new Map()
       for (let i = s2; i <= e2; i++)
         newChillKey2IndexMap.set(c2[i].key, i)
 
-      for (let i = s1; i < e1; i++) {
+      for (let i = s1; i <= e1; i++) {
         const prevNode = c1[i]
-        let index
-        if (prevNode.key != null)
-          index = newChillKey2IndexMap.get(prevNode.key)
 
-        for (let j = s2; j <= e2; j++) {
-          if (isSameNodeType(prevNode, c2[j])) {
-            // patch(oldOne)
-            index = j
-            break
+        if (patchedTime >= need2PatchChildrenCount) {
+          hostRemove(prevNode.el)
+          continue
+        }
+
+        let index
+        if (prevNode.key != null) {
+          index = newChillKey2IndexMap.get(prevNode.key)
+        }
+        else {
+          for (let j = s2; j <= e2; j++) {
+            if (isSameNodeType(prevNode, c2[j])) {
+              index = j
+              break
+            }
           }
         }
 
-        if (index !== undefined)
+        if (index !== undefined) {
           patch(prevNode, c2[index], container, null, parentcomponent)
-        else
+          patchedTime++
+        }
+        else {
           hostRemove(prevNode.el)
+        }
       }
     }
   }
