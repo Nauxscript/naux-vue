@@ -56,11 +56,17 @@ import { h, ref } from '../dist/naux-vue.esm-bundler.js'
 // const prevChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'C' }, 'C'), h('p', { key: 'D', id: 'old-id' }, 'D'), h('p', { key: 'E' }, 'E'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
 // const nextChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'E' }, 'E'), h('p', { key: 'C', id: 'new-id' }, 'C'), h('p', { key: 'D' }, 'D'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
 
-// case 2.3 Some items in new children is new
+// case 2.4 Some items in new children is new
 // before: A B ( C E ) F G
 // after: A B ( E C D ) F G
-const prevChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'C' }, 'C'), h('p', { key: 'E' }, 'E'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
-const nextChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'E' }, 'E'), h('p', { key: 'C', id: 'new-id' }, 'C'), h('p', { key: 'D' }, 'D'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
+// const prevChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'C' }, 'C'), h('p', { key: 'E' }, 'E'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
+// const nextChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'E' }, 'E'), h('p', { key: 'C', id: 'new-id' }, 'C'), h('p', { key: 'D' }, 'D'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
+
+// case 2.5 A comprehensive example.
+// before: A B ( C D E Z ) F G
+// after: A B ( D C Y E ) F G
+const prevChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'C' }, 'C'), h('p', { key: 'D', id: 'old-id' }, 'D'), h('p', { key: 'E' }, 'E'), h('p', { key: 'Z' }, 'Z'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
+const nextChildren = [h('p', { key: 'A' }, 'A'), h('p', { key: 'B' }, 'B'), h('p', { key: 'D', id: 'new-id' }, 'D'), h('p', { key: 'C' }, 'C'), h('p', { key: 'Y' }, 'Y'), h('p', { key: 'E' }, 'E'), h('p', { key: 'F' }, 'F'), h('p', { key: 'G' }, 'G')]
 
 export const Array2Array = {
   setup() {
