@@ -5,6 +5,7 @@ import { createAppAPI } from './createApp'
 import { PublicInstanceProxyHandlers } from './componentPublicInstances'
 import { createComponentInstance, setupComponent } from './component'
 import { Fragment, Text } from './vnode'
+import { getLongestInsreasingSubsequence } from './helpers/getSequence'
 
 export function createRenderer(options) {
   const {
@@ -151,25 +152,33 @@ export function createRenderer(options) {
       // if all the items of the new changed children have been patched,
       // the rest of old children should be remove
       // eg: A B C D E F G => A B D C F G
-      const need2PatchChildrenCount = e2 - i + 1
+      const toBePatched = e2 - s2 + 1
       let patchedTime = 0
 
       // setup a key map of the changed part of new children
-      const newChillKey2IndexMap = new Map()
+      const newChildKey2IndexMap = new Map()
+
+      // initialize a array to store the index of new children item in the old children array
+      const newIndex2OldIndexMap = new Array(toBePatched)
+      for (let i = 0; i < toBePatched; i++) newIndex2OldIndexMap[i] = 0
+
+      let currMaxNewIndex = 0
+      let hasNodeToBeMoved = false
+
       for (let i = s2; i <= e2; i++)
-        newChillKey2IndexMap.set(c2[i].key, i)
+        newChildKey2IndexMap.set(c2[i].key, i)
 
       for (let i = s1; i <= e1; i++) {
         const prevNode = c1[i]
 
-        if (patchedTime >= need2PatchChildrenCount) {
+        if (patchedTime >= toBePatched) {
           hostRemove(prevNode.el)
           continue
         }
 
         let index
         if (prevNode.key != null) {
-          index = newChillKey2IndexMap.get(prevNode.key)
+          index = newChildKey2IndexMap.get(prevNode.key)
         }
         else {
           for (let j = s2; j <= e2; j++) {
@@ -183,9 +192,43 @@ export function createRenderer(options) {
         if (index !== undefined) {
           patch(prevNode, c2[index], container, null, parentcomponent)
           patchedTime++
+          if (index >= currMaxNewIndex)
+            currMaxNewIndex = index
+
+          else
+            hasNodeToBeMoved = true
+
+          // item of newIndex2OldIndexMap shouldn't be 0, cause' 0 is the initial state.
+          newIndex2OldIndexMap[index - s2] = i + 1
         }
         else {
           hostRemove(prevNode.el)
+        }
+      }
+
+      const longestSubsequence = hasNodeToBeMoved ? getLongestInsreasingSubsequence(newIndex2OldIndexMap) : []
+      console.log(longestSubsequence)
+      let sequenceIndex = longestSubsequence.length - 1
+      // insert the moved item by reversed loop
+      for (let i = toBePatched - 1; i >= 0; i--) {
+        // the real index of the item in e2
+        const currIndex = s2 + i
+        const anchor = currIndex + 1 < l2 ? c2[currIndex + 1].el : null
+        const currNode = c2[currIndex]
+        if (newIndex2OldIndexMap[i] === 0) {
+          patch(null, currNode, container, anchor, parentcomponent)
+        }
+        else if (hasNodeToBeMoved) {
+          if (sequenceIndex < 0 || i !== longestSubsequence[sequenceIndex]) {
+            hostInsert(currNode.el, container, anchor)
+            console.log('anchor node:', anchor)
+            console.log('move:', currNode)
+          }
+          else {
+            console.log('stay:', currNode)
+            patch(c1[newIndex2OldIndexMap[i] - 1], currNode, container, anchor, parentcomponent)
+            sequenceIndex--
+          }
         }
       }
     }
