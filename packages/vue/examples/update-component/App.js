@@ -6,6 +6,7 @@ export const App = {
   setup() {
     const count = ref(0)
     const msg = ref('123')
+    window.msg = msg
     const handleChangeMsg = () => {
       msg.value = '456'
     }
