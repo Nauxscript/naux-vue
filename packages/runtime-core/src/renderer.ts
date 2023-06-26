@@ -287,7 +287,19 @@ export function createRenderer(options) {
   }
 
   function processComponent(n1, n2: any, container: any, parentComponent, anchor) {
-    mountComponent(n2, container, parentComponent, anchor)
+    if (!n1)
+      mountComponent(n2, container, parentComponent, anchor)
+    else
+      updateCompoent(n1, n2)
+  }
+
+  function updateCompoent(n1, n2) {
+    const instance = (n2.component = n1.component)
+    instance.next = n2
+    instance.props = n2.props
+    instance.update()
+    console.dir(n1)
+    console.dir(n2)
   }
 
   function mountComponent(initialVnode: any, container: any, parentComponent, anchor) {
@@ -297,13 +309,14 @@ export function createRenderer(options) {
     setupComponent(instance)
 
     instance.proxy = new Proxy({ _: instance }, PublicInstanceProxyHandlers) as any
+    initialVnode.component = instance
 
     // setup render effect
     setupRenderEffect(instance, initialVnode, container, anchor)
   }
 
   function setupRenderEffect(instance, initialVnode, container, anchor) {
-    effect(() => {
+    instance.update = effect(() => {
       if (!instance.isMounted) {
         // get virtual node tree
         const subTree = instance.subTree = instance.render.call(instance.proxy)
