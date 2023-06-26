@@ -6,6 +6,7 @@ import { PublicInstanceProxyHandlers } from './componentPublicInstances'
 import { createComponentInstance, setupComponent } from './component'
 import { Fragment, Text } from './vnode'
 import { getLongestInsreasingSubsequence } from './helpers/getSequence'
+import { shouldUpdateComponent } from './helpers/componenUpdateUtils'
 
 export function createRenderer(options) {
   const {
@@ -290,26 +291,29 @@ export function createRenderer(options) {
     if (!n1)
       mountComponent(n2, container, parentComponent, anchor)
     else
-      updateCompoent(n1, n2)
+      updateComponent(n1, n2)
   }
 
-  function updateCompoent(n1, n2) {
+  function updateComponent(n1, n2) {
     const instance = (n2.component = n1.component)
-    instance.next = n2
-    instance.props = n2.props
-    instance.update()
-    console.dir(n1)
-    console.dir(n2)
+    if (shouldUpdateComponent(n1, n2)) {
+      instance.next = n2
+      instance.props = n2.props
+      instance.update()
+    }
+    else {
+      n2.el = n1.el
+      instance.vnode = n2
+    }
   }
 
   function mountComponent(initialVnode: any, container: any, parentComponent, anchor) {
     // create component instance
-    const instance = createComponentInstance(initialVnode, parentComponent)
+    const instance = (initialVnode.component = createComponentInstance(initialVnode, parentComponent))
     // setup component: props, slots, render, etc...
     setupComponent(instance)
 
     instance.proxy = new Proxy({ _: instance }, PublicInstanceProxyHandlers) as any
-    initialVnode.component = instance
 
     // setup render effect
     setupRenderEffect(instance, initialVnode, container, anchor)
@@ -327,6 +331,13 @@ export function createRenderer(options) {
       }
       else {
         console.log('updated')
+        const { next, vnode } = instance
+
+        if (next) {
+          next.el = vnode.el
+          updateComponentPreRender(instance, next)
+        }
+
         const prevSubTree = instance.subTree
         const subTree = instance.subTree = instance.render.call(instance.proxy)
         patch(prevSubTree, subTree, container, anchor, instance)
@@ -335,6 +346,11 @@ export function createRenderer(options) {
     })
   }
 
+  function updateComponentPreRender(instance: any, nextVNode: any) {
+    instance.vnode = nextVNode
+    instance.next = null
+    instance.props = nextVNode.props
+  }
   return {
     createApp: createAppAPI(render),
   }
