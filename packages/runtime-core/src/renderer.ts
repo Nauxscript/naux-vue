@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { EMPTY_OBJ, ShapeFlags } from '@naux-vue/shared'
 import { effect } from '@naux-vue/reactivity/src/effect'
+import { queueJob } from './scheduler'
 import { createAppAPI } from './createApp'
 import { PublicInstanceProxyHandlers } from './componentPublicInstances'
 import { createComponentInstance, setupComponent } from './component'
@@ -343,6 +344,11 @@ export function createRenderer(options) {
         patch(prevSubTree, subTree, container, anchor, instance)
         initialVnode.el = subTree.el
       }
+    }, {
+      scheduler() {
+        console.log('scheduler')
+        queueJob(instance.update)
+      },
     })
   }
 
