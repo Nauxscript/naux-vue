@@ -1,4 +1,4 @@
-import { NodeTypes } from './ast'
+import { ElementTagTypes, NodeTypes } from './ast'
 
 type Context = ReturnType<typeof createParseContext>
 
@@ -17,8 +17,11 @@ function parseChildren(context: Context) {
     // interpolation
     node = parseInterpolation (context)
   }
-  else if (source.startsWith('<')) {
+  else if (source[0] === '<') {
     // element
+    node = parseElement(context)
+    // eslint-disable-next-line no-console
+    console.log('rest', context.source)
   }
   else {
     // text
@@ -26,6 +29,12 @@ function parseChildren(context: Context) {
   }
   nodes.push(node)
   return nodes
+}
+
+function parseElement(context: Context) {
+  const element = parseTag(context, ElementTagTypes.START)
+  parseTag(context, ElementTagTypes.END)
+  return element
 }
 
 function createRoot(children) {
@@ -67,4 +76,18 @@ function parseInterpolation(context: Context): any {
 
 function advanceBy(context: Context, lenOfCharacters: number) {
   context.source = context.source.slice(lenOfCharacters)
+}
+
+function parseTag(context, tagType: ElementTagTypes) {
+  const matches = /^<\/?([a-z]*)/i.exec(context.source)
+  if (matches) {
+    const tag = matches[1]
+    advanceBy(context, matches[0].length + 1)
+    if (tagType !== ElementTagTypes.START)
+      return
+    return {
+      type: NodeTypes.ELEMENT,
+      tag,
+    }
+  }
 }

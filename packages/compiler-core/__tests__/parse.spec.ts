@@ -25,4 +25,16 @@ describe('parse', () => {
       })
     })
   })
+
+  describe('parse element', () => {
+    it('simple element', () => {
+      const template = '<div></div>'
+      const ast = baseParse(template)
+      const interpolation = ast.children[0]
+      expect(interpolation).toStrictEqual({
+        type: NodeTypes.ELEMENT,
+        tag: 'div',
+      })
+    })
+  })
 })
