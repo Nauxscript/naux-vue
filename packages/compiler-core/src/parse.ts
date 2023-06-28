@@ -54,7 +54,7 @@ function parseInterpolation(context: Context): any {
   const content = context.source.slice(openDelimiter.length, closeDelimiterIndex).trim()
 
   // remove the interpolation
-  context.source = context.source.slice(closeDelimiterIndex + closeDelimiter.length)
+  advanceBy(context, closeDelimiterIndex + closeDelimiter.length)
 
   return {
     type: NodeTypes.INTERPOLATION,
@@ -63,4 +63,8 @@ function parseInterpolation(context: Context): any {
       content,
     },
   }
+}
+
+function advanceBy(context: Context, lenOfCharacters: number) {
+  context.source = context.source.slice(lenOfCharacters)
 }
