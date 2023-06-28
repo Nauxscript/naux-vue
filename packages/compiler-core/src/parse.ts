@@ -8,7 +8,7 @@ export const baseParse = (content: string) => {
 }
 
 function parseChildren(context: Context) {
-  const nodes = []
+  const nodes: any[] = []
   let node
 
   const { source } = context
