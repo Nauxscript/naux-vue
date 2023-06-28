@@ -51,7 +51,7 @@ function parseInterpolation(context: Context): any {
   const closeDelimiterIndex = context.source.indexOf(closeDelimiter, openDelimiter.length)
 
   // get content
-  const content = context.source.slice(openDelimiter.length, closeDelimiterIndex)
+  const content = context.source.slice(openDelimiter.length, closeDelimiterIndex).trim()
 
   // remove the interpolation
   context.source = context.source.slice(closeDelimiterIndex + closeDelimiter.length)

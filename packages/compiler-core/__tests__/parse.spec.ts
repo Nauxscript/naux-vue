@@ -13,7 +13,7 @@ describe('parse', () => {
       })
     })
     it('interpolation', () => {
-      const template = '{{message}}'
+      const template = '{{ message }}'
       const ast = baseParse(template)
       const interpolation = ast.children[0]
       expect(interpolation).toStrictEqual({
