@@ -8,6 +8,7 @@ export const baseParse = (content: string) => {
 }
 
 function parseChildren(context: Context) {
+  const nodes = []
   let node
 
   const { source } = context
@@ -23,7 +24,8 @@ function parseChildren(context: Context) {
     // text
     node = parseText(context)
   }
-  return node
+  nodes.push(node)
+  return nodes
 }
 
 function createRoot(children) {
@@ -35,19 +37,30 @@ function createParseContext(content: string) {
 }
 
 function parseText(context: Context) {
-  return [{
+  return {
     type: NodeTypes.TEXT,
     content: context.source,
-  }]
+  }
 }
 
 function parseInterpolation(context: Context): any {
-  const content = context.source.replace(/{{|}}/g, '').trim()
-  return [{
+  const openDelimiter = '{{'
+  const closeDelimiter = '}}'
+
+  // finde open delimiter index
+  const closeDelimiterIndex = context.source.indexOf(closeDelimiter, openDelimiter.length)
+
+  // get content
+  const content = context.source.slice(openDelimiter.length, closeDelimiterIndex)
+
+  // remove the interpolation
+  context.source = context.source.slice(closeDelimiterIndex + closeDelimiter.length)
+
+  return {
     type: NodeTypes.INTERPOLATION,
     content: {
       type: NodeTypes.SIMPLE_EXPRESSION,
       content,
     },
-  }]
+  }
 }
