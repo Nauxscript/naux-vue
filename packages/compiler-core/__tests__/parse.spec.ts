@@ -6,9 +6,9 @@ describe('parse', () => {
       const ast = baseParse(template)
       const interpolation = ast.children[0]
       expect(interpolation).toStrictEqual({
-        type: 'INTERPOLATION',
+        type: NodeTypes.INTERPOLATION,
         content: {
-          type: 'SIMPLE_EXPRESSION',
+          type: NodeTypes.SIMPLE_EXPRESSION,
           content: 'message',
         },
       })

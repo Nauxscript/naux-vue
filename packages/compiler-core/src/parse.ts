@@ -1,3 +1,5 @@
+import { NodeTypes } from './ast'
+
 export const baseParse = (content: string) => {
   const context = createParseContext(content)
   return createRoot(parseChildren(context))
@@ -15,9 +17,9 @@ function parseChildren(context) {
   //   console.log("No matches found.");
   // }
   return [{
-    type: 'INTERPOLATION',
+    type: NodeTypes.INTERPOLATION,
     content: {
-      type: 'SIMPLE_EXPRESSION',
+      type: NodeTypes.SIMPLE_EXPRESSION,
       content,
     },
   }]
