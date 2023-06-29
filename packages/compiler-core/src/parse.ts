@@ -77,7 +77,7 @@ function parseInterpolation(context: Context): any {
   // remove the interpolation
   // advanceBy(context, closeDelimiterIndex + closeDelimiter.length)
   const rawContent = parseTextData(context, rawContentLength)
-  advanceBy(context, rawContentLength)
+  advanceBy(context, closeDelimiter.length)
 
   const content = rawContent.trim()
 
