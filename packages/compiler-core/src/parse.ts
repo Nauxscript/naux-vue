@@ -20,13 +20,14 @@ function parseChildren(context: Context) {
   else if (source[0] === '<') {
     // element
     node = parseElement(context)
-    // eslint-disable-next-line no-console
-    console.log('rest', context.source)
   }
   else {
     // text
     node = parseText(context)
   }
+
+  // eslint-disable-next-line no-console
+  console.log('rest', context.source)
   nodes.push(node)
   return nodes
 }
@@ -66,11 +67,19 @@ function parseInterpolation(context: Context): any {
   // finde open delimiter index
   const closeDelimiterIndex = context.source.indexOf(closeDelimiter, openDelimiter.length)
 
+  advanceBy(context, openDelimiter.length)
+
+  const rawContentLength = closeDelimiterIndex - openDelimiter.length
+
   // get content
-  const content = context.source.slice(openDelimiter.length, closeDelimiterIndex).trim()
+  // const content = context.source.slice(openDelimiter.length, closeDelimiterIndex)
 
   // remove the interpolation
-  advanceBy(context, closeDelimiterIndex + closeDelimiter.length)
+  // advanceBy(context, closeDelimiterIndex + closeDelimiter.length)
+  const rawContent = parseTextData(context, rawContentLength)
+  advanceBy(context, rawContentLength)
+
+  const content = rawContent.trim()
 
   return {
     type: NodeTypes.INTERPOLATION,
