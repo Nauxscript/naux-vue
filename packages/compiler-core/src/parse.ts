@@ -46,10 +46,17 @@ function createParseContext(content: string) {
 }
 
 function parseText(context: Context) {
+  const content = parseTextData(context, context.source.length)
   return {
     type: NodeTypes.TEXT,
-    content: context.source,
+    content,
   }
+}
+
+function parseTextData(context: Context, length: number) {
+  const content = context.source.slice(0, length)
+  advanceBy(context, length)
+  return content
 }
 
 function parseInterpolation(context: Context): any {
