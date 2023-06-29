@@ -34,11 +34,12 @@ describe('parse', () => {
       expect(interpolation).toStrictEqual({
         type: NodeTypes.ELEMENT,
         tag: 'div',
+        children: [],
       })
     })
   })
 
-  test.only('complex template', () => {
+  test('complex template', () => {
     const template = '<div>hello, {{message}}</div>'
     const ast = baseParse(template)
     const interpolation = ast.children[0]

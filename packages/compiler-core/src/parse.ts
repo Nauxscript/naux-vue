@@ -4,36 +4,38 @@ type Context = ReturnType<typeof createParseContext>
 
 export const baseParse = (content: string) => {
   const context = createParseContext(content)
-  return createRoot(parseChildren(context))
+  return createRoot(parseChildren(context, ''))
 }
 
-function parseChildren(context: Context) {
+function parseChildren(context: Context, tagName: string) {
   const nodes: any[] = []
   let node
 
-  const { source } = context
+  while (!isEnd(context, tagName)) {
+    const { source } = context
 
-  if (source.startsWith('{{')) {
+    if (source.startsWith('{{')) {
     // interpolation
-    node = parseInterpolation (context)
-  }
-  else if (source[0] === '<') {
+      node = parseInterpolation (context)
+    }
+    else if (source[0] === '<') {
     // element
-    node = parseElement(context)
-  }
-  else {
+      node = parseElement(context)
+    }
+    else {
     // text
-    node = parseText(context)
+      node = parseText(context)
+    }
+
+    nodes.push(node)
   }
 
-  // eslint-disable-next-line no-console
-  console.log('rest', context.source)
-  nodes.push(node)
   return nodes
 }
 
 function parseElement(context: Context) {
-  const element = parseTag(context, ElementTagTypes.START)
+  const element: any = parseTag(context, ElementTagTypes.START)
+  element.children = parseChildren(context, element.tag)
   parseTag(context, ElementTagTypes.END)
   return element
 }
@@ -47,7 +49,13 @@ function createParseContext(content: string) {
 }
 
 function parseText(context: Context) {
-  const content = parseTextData(context, context.source.length)
+  const endTag = '{{'
+  let endIndex = context.source.length
+  const endTagIndex = context.source.indexOf(endTag)
+  if (endTagIndex !== -1)
+    endIndex = endTagIndex
+
+  const content = parseTextData(context, endIndex)
   return {
     type: NodeTypes.TEXT,
     content,
@@ -106,4 +114,10 @@ function parseTag(context, tagType: ElementTagTypes) {
       tag,
     }
   }
+}
+
+function isEnd(context: Context, tagName: string) {
+  if (tagName && context.source.startsWith(`</${tagName}>`))
+    return true
+  return !context.source
 }
