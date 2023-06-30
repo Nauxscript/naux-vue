@@ -39,26 +39,28 @@ describe('parse', () => {
     })
   })
 
-  test('complex template', () => {
-    const template = '<div>hello, {{message}}</div>'
-    const ast = baseParse(template)
-    const interpolation = ast.children[0]
-    expect(interpolation).toStrictEqual({
-      type: NodeTypes.ELEMENT,
-      tag: 'div',
-      children: [
-        {
-          type: NodeTypes.TEXT,
-          content: 'hello, ',
-        },
-        {
-          type: NodeTypes.INTERPOLATION,
-          content: {
-            type: NodeTypes.SIMPLE_EXPRESSION,
-            content: 'message',
+  describe('complex template: html element with text and interpolation', () => {
+    test('complex template: <div>hello, {{message}}</div>', () => {
+      const template = '<div>hello, {{message}}</div>'
+      const ast = baseParse(template)
+      const interpolation = ast.children[0]
+      expect(interpolation).toStrictEqual({
+        type: NodeTypes.ELEMENT,
+        tag: 'div',
+        children: [
+          {
+            type: NodeTypes.TEXT,
+            content: 'hello, ',
           },
-        },
-      ],
+          {
+            type: NodeTypes.INTERPOLATION,
+            content: {
+              type: NodeTypes.SIMPLE_EXPRESSION,
+              content: 'message',
+            },
+          },
+        ],
+      })
     })
   })
 })
