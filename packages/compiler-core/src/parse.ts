@@ -12,6 +12,8 @@ function parseChildren(context: Context, tagName: string) {
   let node
 
   while (!isEnd(context, tagName)) {
+    // eslint-disable-next-line no-console
+    console.log(context.source)
     const { source } = context
 
     if (source.startsWith('{{')) {
@@ -49,11 +51,13 @@ function createParseContext(content: string) {
 }
 
 function parseText(context: Context) {
-  const endTag = '{{'
+  const endTags = ['{{', '<']
   let endIndex = context.source.length
-  const endTagIndex = context.source.indexOf(endTag)
-  if (endTagIndex !== -1)
-    endIndex = endTagIndex
+  for (let i = 0; i < endTags.length; i++) {
+    const endTagIndex = context.source.indexOf(endTags[i])
+    if (endTagIndex !== -1 && endTagIndex < endIndex)
+      endIndex = endTagIndex
+  }
 
   const content = parseTextData(context, endIndex)
   return {
