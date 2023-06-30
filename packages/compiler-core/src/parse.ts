@@ -4,14 +4,14 @@ type Context = ReturnType<typeof createParseContext>
 
 export const baseParse = (content: string) => {
   const context = createParseContext(content)
-  return createRoot(parseChildren(context, ''))
+  return createRoot(parseChildren(context, []))
 }
 
-function parseChildren(context: Context, tagName: string) {
+function parseChildren(context: Context, ancestors: string[]) {
   const nodes: any[] = []
   let node
 
-  while (!isEnd(context, tagName)) {
+  while (!isEnd(context, ancestors)) {
     // eslint-disable-next-line no-console
     console.log(context.source)
     const { source } = context
@@ -22,7 +22,7 @@ function parseChildren(context: Context, tagName: string) {
     }
     else if (source[0] === '<') {
     // element
-      node = parseElement(context)
+      node = parseElement(context, ancestors)
     }
     else {
     // text
@@ -35,10 +35,31 @@ function parseChildren(context: Context, tagName: string) {
   return nodes
 }
 
-function parseElement(context: Context) {
+function isEnd(context: Context, ancestors: string[]) {
+  if (!context.source)
+    return true
+
+  for (let i = ancestors.length - 1; i >= 0; i--) {
+    const tagName = ancestors[i]
+    const currClosedTag = context.source.slice(2, 2 + tagName.length)
+    if (context.source.startsWith('</') && tagName === currClosedTag)
+      return true
+  }
+}
+
+function parseElement(context: Context, ancestors: string[]) {
   const element: any = parseTag(context, ElementTagTypes.START)
-  element.children = parseChildren(context, element.tag)
-  parseTag(context, ElementTagTypes.END)
+  ancestors.push(element.tag)
+  element.children = parseChildren(context, ancestors)
+  ancestors.pop()
+  if (context.source.startsWith('</')) {
+    const currClosedTag = context.source.slice(2, 2 + element.tag.length)
+    if (element.tag === currClosedTag)
+      parseTag(context, ElementTagTypes.END)
+    else
+      throw new Error(`missing closed tag: ${element.tag}`)
+  }
+
   return element
 }
 
@@ -118,10 +139,4 @@ function parseTag(context, tagType: ElementTagTypes) {
       tag,
     }
   }
-}
-
-function isEnd(context: Context, tagName: string) {
-  if (tagName && context.source.startsWith(`</${tagName}>`))
-    return true
-  return !context.source
 }

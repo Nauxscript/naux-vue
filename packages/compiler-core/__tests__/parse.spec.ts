@@ -63,7 +63,7 @@ describe('parse', () => {
       })
     })
 
-    it.only('complex template: nested html elements with interpolation', () => {
+    it('complex template: nested html elements with interpolation', () => {
       const template = '<div><p>hello, </p>{{message}}</div>'
       const ast = baseParse(template)
       const interpolation = ast.children[0]
@@ -88,6 +88,12 @@ describe('parse', () => {
           },
         ],
       })
+    })
+
+    it('complex template: nested html elements but without correct closed tag', () => {
+      expect(() => {
+        baseParse('<div><p></div>')
+      }).toThrowError('missing closed tag: p')
     })
   })
 })
