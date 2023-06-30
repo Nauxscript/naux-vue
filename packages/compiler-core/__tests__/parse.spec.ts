@@ -62,5 +62,32 @@ describe('parse', () => {
         ],
       })
     })
+
+    test('complex template: nested html elements with interpolation', () => {
+      const template = '<div><p>hello, <p>{{message}}</div>'
+      const ast = baseParse(template)
+      const interpolation = ast.children[0]
+      expect(interpolation).toStrictEqual({
+        type: NodeTypes.ELEMENT,
+        tag: 'div',
+        children: [
+          {
+            type: NodeTypes.ELEMENT,
+            tag: 'p',
+            children: [{
+              type: NodeTypes.TEXT,
+              content: 'hello, ',
+            }],
+          },
+          {
+            type: NodeTypes.INTERPOLATION,
+            content: {
+              type: NodeTypes.SIMPLE_EXPRESSION,
+              content: 'message',
+            },
+          },
+        ],
+      })
+    })
   })
 })
