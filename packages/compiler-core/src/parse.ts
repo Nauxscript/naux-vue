@@ -36,13 +36,12 @@ function parseChildren(context: Context, ancestors: string[]) {
 }
 
 function isEnd(context: Context, ancestors: string[]) {
-  if (!context.source)
+  const { source } = context
+  if (!source)
     return true
 
   for (let i = ancestors.length - 1; i >= 0; i--) {
-    const tagName = ancestors[i]
-    const currClosedTag = context.source.slice(2, 2 + tagName.length)
-    if (context.source.startsWith('</') && tagName === currClosedTag)
+    if (isThisTagClosing(ancestors[i], source))
       return true
   }
 }
@@ -52,15 +51,16 @@ function parseElement(context: Context, ancestors: string[]) {
   ancestors.push(element.tag)
   element.children = parseChildren(context, ancestors)
   ancestors.pop()
-  if (context.source.startsWith('</')) {
-    const currClosedTag = context.source.slice(2, 2 + element.tag.length)
-    if (element.tag === currClosedTag)
-      parseTag(context, ElementTagTypes.END)
-    else
-      throw new Error(`missing closed tag: ${element.tag}`)
-  }
+  if (isThisTagClosing(element.tag, context.source))
+    parseTag(context, ElementTagTypes.END)
+  else
+    throw new Error(`missing closed tag: ${element.tag}`)
 
   return element
+}
+
+function isThisTagClosing(tagName: string, source: string) {
+  return source.startsWith('</') && source.slice(2, 2 + tagName.length) === tagName
 }
 
 function createRoot(children) {
