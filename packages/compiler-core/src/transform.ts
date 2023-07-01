@@ -1,14 +1,15 @@
-import { NodeTypes } from './ast'
+export function transform(root, options: Record<any, any> = {}) {
+  const { nodeTransforms } = options
+  if (nodeTransforms) {
+    for (let i = 0; i < nodeTransforms.length; i++)
+      nodeTransforms[i](root)
+  }
+  traverseNode(root, options)
+}
 
-export function transform(root) {
-  // eslint-disable-next-line no-console
-  console.log(root)
-  const { children } = root
-  if (root.type === NodeTypes.TEXT)
-    root.content = `${root.content}naux`
-
-  if (!children)
+function traverseNode(node, options) {
+  if (!node.children)
     return
-  for (let i = 0; i < children.length; i++)
-    transform(children[i])
+  for (let i = 0; i < node.children.length; i++)
+    transform(node.children[i], options)
 }
