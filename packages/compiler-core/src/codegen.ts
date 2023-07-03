@@ -1,7 +1,8 @@
 export function generate(root) {
   const content = root.codegenNode.content
-  const params = ['_ctx', '_cache']
-  const code = `function render(${params.join(',')}) {
+  const functionName = 'render'
+  const signtures = ['_ctx', '_cache']
+  const code = `function ${functionName}(${signtures.join(',')}) {
     return "${content}"
   }`
 
