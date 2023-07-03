@@ -1,7 +1,7 @@
 // Vitest Snapshot v1
 
 exports[`codegen > basic string 1`] = `
-"function render(_ctx, _cache) {
+"function render(_ctx,_cache) {
     return \\"hello, naux\\"
   }"
 `;
