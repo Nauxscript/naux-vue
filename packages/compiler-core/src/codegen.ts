@@ -1,12 +1,31 @@
-export function generate(root) {
-  const content = root.codegenNode.content
+export function generate(ast) {
+  const context = createCodegenContext()
+  const { push } = context
   const functionName = 'render'
   const signtures = ['_ctx', '_cache']
-  const code = `function ${functionName}(${signtures.join(',')}) {
-    return "${content}"
-  }`
+  push('return ')
+  push(`function ${functionName}`)
+  push(`(${signtures.join(',')}){`)
+  getNode(ast, context)
+  push('}')
 
   return {
-    code,
+    code: context.code,
   }
+}
+
+function createCodegenContext() {
+  const context = {
+    code: '',
+    push(source) {
+      context.code += source
+    },
+  }
+  return context
+}
+
+function getNode(ast: any, context) {
+  const { push } = context
+  const node = ast.codegenNode.content
+  push(`return '${node}'`)
 }
