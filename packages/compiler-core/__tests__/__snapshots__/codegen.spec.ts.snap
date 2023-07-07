@@ -1,5 +1,7 @@
 // Vitest Snapshot v1
 
+exports[`codegen > basic string 1`] = `"export function render(_ctx,_cache){return 'hello, naux'}"`;
+
 exports[`codegen > interpolation 1`] = `
 "import {toDisplayString: _toDisplayString} from Vue
 export function render(_ctx,_cache){return _toDisplayString(_ctx.message)}"

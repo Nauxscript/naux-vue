@@ -11,7 +11,7 @@ describe('codegen', () => {
     expect(code).toMatchSnapshot()
   })
 
-  it.only('interpolation', () => {
+  it('interpolation', () => {
     const ast = baseParse('{{message}}')
     transform(ast, {
       nodeTransforms: [transformExpression],

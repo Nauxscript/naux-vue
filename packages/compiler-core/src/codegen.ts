@@ -21,8 +21,10 @@ export function generate(ast) {
 }
 
 function genModulePreamble(ast, context) {
-  const { push } = context
   const { helpers } = ast
+  if (!helpers.length)
+    return
+  const { push } = context
   const VueBinging = 'Vue'
   const aliasHelper = (s: string) => `${s}: _${s}`
   push(`import {${helpers.map(aliasHelper).join(',')}} from ${VueBinging}`)
