@@ -3,10 +3,12 @@ export function generate(ast) {
   const { push } = context
   const functionName = 'render'
   const signtures = ['_ctx', '_cache']
-  push('return ')
+
+
+  push('export ')
   push(`function ${functionName}`)
   push(`(${signtures.join(',')}){`)
-  getNode(ast, context)
+  genNode(ast, context)
   push('}')
 
   return {
@@ -24,7 +26,7 @@ function createCodegenContext() {
   return context
 }
 
-function getNode(ast: any, context) {
+function genNode(ast: any, context) {
   const { push } = context
   const node = ast.codegenNode.content
   push(`return '${node}'`)

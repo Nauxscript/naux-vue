@@ -12,8 +12,6 @@ function parseChildren(context: Context, ancestors: string[]) {
   let node
 
   while (!isEnd(context, ancestors)) {
-    // eslint-disable-next-line no-console
-    console.log(context.source)
     const { source } = context
 
     if (source.startsWith('{{')) {
