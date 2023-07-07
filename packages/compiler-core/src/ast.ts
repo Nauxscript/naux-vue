@@ -3,6 +3,7 @@ export enum NodeTypes {
   INTERPOLATION,
   SIMPLE_EXPRESSION,
   ELEMENT,
+  ROOT,
 }
 
 export enum ElementTagTypes {

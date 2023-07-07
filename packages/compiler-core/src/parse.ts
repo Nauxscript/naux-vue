@@ -62,7 +62,11 @@ function isThisTagClosing(tagName: string, source: string) {
 }
 
 function createRoot(children) {
-  return { children }
+  return {
+    type: NodeTypes.ROOT,
+    children,
+    helpers: [],
+  }
 }
 
 function createParseContext(content: string) {
