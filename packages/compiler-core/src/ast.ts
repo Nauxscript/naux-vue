@@ -6,6 +6,8 @@ export enum NodeTypes {
   ROOT,
 }
 
+export const TO_DISPLAY_STRING = 'toDisplayString'
+
 export enum ElementTagTypes {
   START,
   END,
