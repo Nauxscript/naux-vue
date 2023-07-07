@@ -8,7 +8,8 @@ export function generate(ast) {
   push('export ')
   push(`function ${functionName}`)
   push(`(${signtures.join(',')}){`)
-  genNode(ast, context)
+  push('return ')
+  genNode(ast.codegenNode, context)
   push('}')
 
   return {
@@ -27,7 +28,11 @@ function createCodegenContext() {
 }
 
 function genNode(ast: any, context) {
+function genNode(node: any, context) {
+  switch (node.type) {
+      genText(context, node)
   const { push } = context
   const node = ast.codegenNode.content
   push(`return '${node}'`)
+  push(`'${node.content}'`)
 }
