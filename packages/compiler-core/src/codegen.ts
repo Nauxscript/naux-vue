@@ -1,4 +1,5 @@
-import { NodeTypes, TO_DISPLAY_STRING } from './ast'
+import { NodeTypes } from './ast'
+import { TO_DISPLAY_STRING, helperMapName } from './runtimeHelpers'
 
 export function generate(ast) {
   const context = createCodegenContext()
@@ -26,7 +27,10 @@ function genFunctionPreamble(ast, context) {
     return
   const { push } = context
   const VueBinging = 'Vue'
-  const aliasHelper = (s: string) => `${s}: _${s}`
+  const aliasHelper = (s: string) => {
+    const _s = helperMapName[s]
+    return `${_s}: _${_s}`
+  }
   push(`const {${helpers.map(aliasHelper).join(',')}} = ${VueBinging}`)
   push('\n')
 }
@@ -37,8 +41,8 @@ function createCodegenContext() {
     push(source) {
       context.code += source
     },
-    helper(name: string) {
-      return `_${name}`
+    helper(name) {
+      return `_${helperMapName[name]}`
     },
   }
   return context

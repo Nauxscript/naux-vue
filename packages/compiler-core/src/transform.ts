@@ -1,4 +1,5 @@
-import { NodeTypes, TO_DISPLAY_STRING } from './ast'
+import { NodeTypes } from './ast'
+import { TO_DISPLAY_STRING } from './runtimeHelpers'
 
 export function transform(root, options: Record<any, any> = {}) {
   const context = createTransformContext(root, options)
