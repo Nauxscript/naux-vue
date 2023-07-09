@@ -6,9 +6,9 @@ export function generate(ast) {
   const functionName = 'render'
   const signtures = ['_ctx', '_cache']
 
-  genModulePreamble(ast, context)
+  genFunctionPreamble(ast, context)
 
-  push('export ')
+  push('return ')
   push(`function ${functionName}`)
   push(`(${signtures.join(',')}){`)
   push('return ')
@@ -20,14 +20,14 @@ export function generate(ast) {
   }
 }
 
-function genModulePreamble(ast, context) {
+function genFunctionPreamble(ast, context) {
   const { helpers } = ast
   if (!helpers.length)
     return
   const { push } = context
   const VueBinging = 'Vue'
   const aliasHelper = (s: string) => `${s}: _${s}`
-  push(`import {${helpers.map(aliasHelper).join(',')}} from ${VueBinging}`)
+  push(`const {${helpers.map(aliasHelper).join(',')}} = ${VueBinging}`)
   push('\n')
 }
 
