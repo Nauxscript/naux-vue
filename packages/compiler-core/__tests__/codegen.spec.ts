@@ -19,4 +19,11 @@ describe('codegen', () => {
     const { code } = generate(ast)
     expect(code).toMatchSnapshot()
   })
+
+  it('element', () => {
+    const ast = baseParse('<div>hi naux</div>')
+    transform(ast)
+    const { code } = generate(ast)
+    expect(code).toMatchSnapshot()
+  })
 })
