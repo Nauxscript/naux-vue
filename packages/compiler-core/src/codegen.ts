@@ -59,7 +59,7 @@ function genNode(node: any, context) {
       genInterpolation(node, context)
       break
     case NodeTypes.SIMPLE_EXPRESSION:
-      genCompoundExpression(node, context)
+      getExpression(node, context)
       break
     case NodeTypes.ELEMENT:
       genElement(node, context)
@@ -83,6 +83,11 @@ function genText(node: any, context: any) {
   push(`"${node.content}"`)
 }
 
+function getExpression(node, context) {
+  const { push } = context
+  push(node.content)
+}
+
 function genInterpolation(node, context) {
   const { push, helper } = context
   push(`${helper(TO_DISPLAY_STRING)}(`)
@@ -90,7 +95,3 @@ function genInterpolation(node, context) {
   push(')')
 }
 
-function genCompoundExpression(node: any, context: any) {
-  const { push } = context
-  push(node.content)
-}
