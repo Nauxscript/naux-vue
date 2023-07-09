@@ -33,6 +33,12 @@ importers:
         specifier: ^0.24.3
         version: 0.24.5
 
+  packages/compiler-core:
+    dependencies:
+      '@naux-vue/shared':
+        specifier: workspace*
+        version: link:../shared
+
   packages/reactivity:
     dependencies:
       '@naux-vue/shared':
