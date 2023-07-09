@@ -55,11 +55,11 @@ function genNode(node: any, context) {
     case NodeTypes.TEXT:
       genText(node, context)
       break
-    case NodeTypes.SIMPLE_EXPRESSION:
-      genCompoundExpression(node, context)
-      break
     case NodeTypes.INTERPOLATION:
       genInterpolation(node, context)
+      break
+    case NodeTypes.SIMPLE_EXPRESSION:
+      genCompoundExpression(node, context)
       break
     case NodeTypes.ELEMENT:
       genElement(node, context)

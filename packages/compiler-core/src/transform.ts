@@ -15,6 +15,7 @@ function traverseNode(node, context) {
       nodeTransforms[i](node, context)
   }
   switch (node.type) {
+    case NodeTypes.ELEMENT:
     case NodeTypes.ROOT:
       traverseChildren(node, context)
       break
