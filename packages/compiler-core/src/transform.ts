@@ -1,5 +1,5 @@
 import { NodeTypes } from './ast'
-import { CREATE_ELEMENT_VNODE, TO_DISPLAY_STRING } from './runtimeHelpers'
+import { TO_DISPLAY_STRING } from './runtimeHelpers'
 
 export function transform(root, options: Record<any, any> = {}) {
   const context = createTransformContext(root, options)
@@ -12,14 +12,10 @@ function traverseNode(node, context) {
   const { nodeTransforms } = context
   if (nodeTransforms) {
     for (let i = 0; i < nodeTransforms.length; i++)
-      nodeTransforms[i](node)
+      nodeTransforms[i](node, context)
   }
   switch (node.type) {
     case NodeTypes.ROOT:
-      traverseChildren(node, context)
-      break
-    case NodeTypes.ELEMENT:
-      context.helper(CREATE_ELEMENT_VNODE)
       traverseChildren(node, context)
       break
     case NodeTypes.INTERPOLATION:

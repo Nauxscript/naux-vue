@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 import { transform } from '../src/transform'
 import { generate } from '../src/codegen'
+import { transformElement } from './../src/transforms/transformElement'
 import { transformExpression } from './../src/transforms/transformExpression'
 import { baseParse } from './../src/parse'
 describe('codegen', () => {
@@ -22,7 +23,9 @@ describe('codegen', () => {
 
   it('element', () => {
     const ast = baseParse('<div>hi naux</div>')
-    transform(ast)
+    transform(ast, {
+      nodeTransforms: [transformElement],
+    })
     const { code } = generate(ast)
     expect(code).toMatchSnapshot()
   })
