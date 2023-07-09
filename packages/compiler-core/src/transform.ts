@@ -10,9 +10,15 @@ export function transform(root, options: Record<any, any> = {}) {
 
 function traverseNode(node, context) {
   const { nodeTransforms } = context
+  const exitFns: Array<Function> = []
   if (nodeTransforms) {
-    for (let i = 0; i < nodeTransforms.length; i++)
-      nodeTransforms[i](node, context)
+    for (let i = 0; i < nodeTransforms.length; i++) {
+      const transformFn = nodeTransforms[i]
+      const onExit = transformFn(node, context)
+      if (onExit) {
+        exitFns.push(onExit)
+      }
+    }
   }
   switch (node.type) {
     case NodeTypes.ELEMENT:
@@ -24,6 +30,11 @@ function traverseNode(node, context) {
       break
     default:
       break
+  }
+
+  let i = exitFns.length
+  while(i--) {
+    exitFns[i]()
   }
 }
 
