@@ -5,13 +5,12 @@ export const transformElement = (node, context) => {
   if (node.type !== NodeTypes.ELEMENT)
     return
   return () => {
-
-
     context.helper(CREATE_ELEMENT_VNODE)
 
     const { children } = node
 
-    if (children.length <= 1) return
+    if (children.length <= 1)
+      return
 
     // transform tag
     const vnodeTag = node.tag
@@ -25,7 +24,7 @@ export const transformElement = (node, context) => {
       type: NodeTypes.ELEMENT,
       props: vnodeProps,
       tag: vnodeTag,
-      children: vnodeChildren
+      children: vnodeChildren,
     }
   }
 }

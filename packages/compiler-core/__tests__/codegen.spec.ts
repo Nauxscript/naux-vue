@@ -1,4 +1,4 @@
-import { describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { transform } from '../src/transform'
 import { generate } from '../src/codegen'
 import { transformText } from '../src/transforms/transformText'
