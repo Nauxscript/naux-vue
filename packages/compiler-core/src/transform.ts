@@ -56,7 +56,12 @@ function createTransformContext(root: any, options: Record<any, any>) {
 }
 
 function createRootCodegen(root: any) {
-  root.codegenNode = root.children[0]
+  const child = root.children[0]
+  if (child.type === NodeTypes.ELEMENT && child.codegenNode) {
+    root.codegenNode = child.codegenNode
+  } else {
+    root.codegenNode = child
+  }
 }
 
 function createRootHelpler(root: any, context) {

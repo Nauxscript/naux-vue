@@ -1,3 +1,4 @@
+import { isString } from '@naux-vue/shared'
 import { NodeTypes } from './ast'
 import { CREATE_ELEMENT_VNODE, TO_DISPLAY_STRING, helperMapName } from './runtimeHelpers'
 
@@ -64,6 +65,9 @@ function genNode(node: any, context) {
     case NodeTypes.ELEMENT:
       genElement(node, context)
       break
+    case NodeTypes.COMPOUND_EXPRESSION:
+      genCompoundExpression(node, context)
+      break
     default:
       break
   }
@@ -71,10 +75,10 @@ function genNode(node: any, context) {
 
 function genElement(node, context) {
   const { push, helper } = context
-  const { tag } = node
+  const { tag, children, props } = node
   push(`(${helper(CREATE_ELEMENT_VNODE)}(`)
-  push(`"${tag}", null, `)
-  genNode(node.children[0], context)
+  push(`"${tag}", ${props}, `)
+  genNode(children[0], context)
   push('))')
 }
 
@@ -95,3 +99,13 @@ function genInterpolation(node, context) {
   push(')')
 }
 
+function genCompoundExpression(node: any, context: any) {
+  const { push } = context
+  for (let i = 0; i < node.children.length; i++) {
+    const child = node.children[i]
+    if (isString(child))
+      push(child)
+    else
+      genNode(child, context)
+  }
+}

@@ -8,8 +8,8 @@ return function render(_ctx,_cache){return (_createElementVNode(\\"div\\", null,
 `;
 
 exports[`codegen > element and interpolation 1`] = `
-"const {createElementVNode: _createElementVNode,toDisplayString: _toDisplayString} = Vue
-return function render(_ctx,_cache){return (_createElementVNode(\\"div\\", null, \\"hi,\\"))}"
+"const {toDisplayString: _toDisplayString,createElementVNode: _createElementVNode} = Vue
+return function render(_ctx,_cache){return (_createElementVNode(\\"div\\", null, \\"hi,\\" + _toDisplayString(_ctx.msg)))}"
 `;
 
 exports[`codegen > interpolation 1`] = `

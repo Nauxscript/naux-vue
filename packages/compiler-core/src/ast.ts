@@ -4,6 +4,7 @@ export enum NodeTypes {
   SIMPLE_EXPRESSION,
   ELEMENT,
   ROOT,
+  COMPOUND_EXPRESSION,
 }
 
 export enum ElementTagTypes {
