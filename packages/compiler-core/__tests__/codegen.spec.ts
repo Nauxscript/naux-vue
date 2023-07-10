@@ -34,7 +34,7 @@ describe('codegen', () => {
   it('element and interpolation', () => {
     const ast: any = baseParse('<div>hi,{{msg}}</div>')
     transform(ast, {
-      nodeTransforms: [transformExpression, transformElement, transformText],
+      nodeTransforms: [transformElement, transformText, transformExpression],
     })
     // eslint-disable-next-line no-console
     console.log('compo', ast.codegenNode)
