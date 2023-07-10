@@ -1,4 +1,5 @@
 import { NodeTypes } from '../ast'
+import { isText } from '../utils'
 
 export const transformText = (node) => {
   if (node.type !== NodeTypes.ELEMENT)
@@ -32,8 +33,4 @@ export const transformText = (node) => {
       }
     }
   }
-}
-
-function isText(node) {
-  return node.type === NodeTypes.INTERPOLATION || node.type === NodeTypes.TEXT
 }
