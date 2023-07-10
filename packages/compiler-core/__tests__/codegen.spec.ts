@@ -36,8 +36,6 @@ describe('codegen', () => {
     transform(ast, {
       nodeTransforms: [transformElement, transformText, transformExpression],
     })
-    // eslint-disable-next-line no-console
-    console.log('compo', ast.codegenNode)
     const { code } = generate(ast)
     expect(code).toMatchSnapshot()
   })

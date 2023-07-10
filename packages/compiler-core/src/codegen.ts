@@ -50,8 +50,6 @@ function createCodegenContext() {
 }
 
 function genNode(node: any, context) {
-  // eslint-disable-next-line no-console
-  console.log(node)
   switch (node.type) {
     case NodeTypes.TEXT:
       genText(node, context)
@@ -77,7 +75,6 @@ function genElement(node, context) {
   const { push, helper } = context
   const { tag, children, props } = node
   push(`(${helper(CREATE_ELEMENT_VNODE)}(`)
-  // genNode(children[0], context)
   genNodeList(genNullableArgs([tag, props, children]), context)
   push('))')
 }
