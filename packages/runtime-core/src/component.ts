@@ -4,6 +4,8 @@ import { initProps } from './componentProps'
 import { emit } from './componentEmit'
 import { initSlots } from './componentSlots'
 
+let compile
+
 export function createComponentInstance(vnode: any, parent) {
   // eslint-disable-next-line no-console
   console.log(parent)
@@ -73,5 +75,16 @@ function handleSetupResult(instance, setupResult: any) {
 
 function finishComponentSetup(instance: any) {
   const Component = instance.type
+  if (!instance.render) {
+    if (compile && !Component.render) {
+      if (Component.template)
+        Component.render = compile(Component.template)
+    }
+  }
+  // if (Component.template && )
   instance.render = Component.render
+}
+
+export function registRuntimeCompile(_compile) {
+  compile = _compile
 }
