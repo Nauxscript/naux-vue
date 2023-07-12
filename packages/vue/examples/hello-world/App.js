@@ -12,6 +12,7 @@ const examples = [
   'update-component',
   'nextTick',
   'compiler-base',
+  'compiler-multiple-types',
 ]
 
 export const App = {
