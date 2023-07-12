@@ -31,6 +31,13 @@ export const createTextVnode = (text: string) => {
   return createVNode(Text, {}, text)
 }
 
+export const normalizeVNode = (child) => {
+  if (typeof child === 'string' || typeof child === 'number')
+    return createVNode(Text, null, child)
+  else
+    return child
+}
+
 function getShapeFlag(type) {
   return typeof type === 'string' ? ShapeFlags.ELEMENT : ShapeFlags.STATEFUL_COMPONENT
 }

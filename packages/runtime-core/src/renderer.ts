@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import { EMPTY_OBJ, ShapeFlags } from '@naux-vue/shared'
 import { effect } from '@naux-vue/reactivity/src/effect'
+import { Fragment, Text, normalizeVNode } from './vnode'
 import { queueJob } from './scheduler'
 import { createAppAPI } from './createApp'
 import { PublicInstanceProxyHandlers } from './componentPublicInstances'
 import { createComponentInstance, setupComponent } from './component'
-import { Fragment, Text } from './vnode'
 import { getLongestInsreasingSubsequence } from './helpers/getSequence'
 import { shouldUpdateComponent } from './helpers/componenUpdateUtils'
 
@@ -324,7 +324,7 @@ export function createRenderer(options) {
     instance.update = effect(() => {
       if (!instance.isMounted) {
         // get virtual node tree
-        const subTree = instance.subTree = instance.render.call(instance.proxy)
+        const subTree = instance.subTree = normalizeVNode(instance.render.call(instance.proxy, instance.proxy))
         // recur to patch instance inner vnode tree
         patch(null, subTree, container, anchor, instance)
         initialVnode.el = subTree.el
@@ -340,7 +340,7 @@ export function createRenderer(options) {
         }
 
         const prevSubTree = instance.subTree
-        const subTree = instance.subTree = instance.render.call(instance.proxy)
+        const subTree = instance.subTree = normalizeVNode(instance.render.call(instance.proxy, instance.proxy))
         patch(prevSubTree, subTree, container, anchor, instance)
         initialVnode.el = subTree.el
       }
