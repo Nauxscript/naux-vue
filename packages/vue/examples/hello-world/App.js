@@ -1,6 +1,18 @@
 import { h } from '../dist/naux-vue.esm-bundler.js'
 
-const examples = ['component-props', 'component-emits', 'component-slots', 'getCurrentInstance', 'provide-inject', 'custom-renderer', 'update-process', 'update-children', 'update-component', 'nextTick']
+const examples = [
+  'component-props',
+  'component-emits',
+  'component-slots',
+  'getCurrentInstance',
+  'provide-inject',
+  'custom-renderer',
+  'update-process',
+  'update-children',
+  'update-component',
+  'nextTick',
+  'compiler-base',
+]
 
 export const App = {
   render() {
