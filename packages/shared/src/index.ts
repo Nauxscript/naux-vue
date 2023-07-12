@@ -25,3 +25,5 @@ export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.sli
 export const toHandlerKey = (str: string) => (str ? `on${capitalize(camelize(str))}` : '')
 
 export const EMPTY_OBJ = {}
+
+export * from './toDisplayString'

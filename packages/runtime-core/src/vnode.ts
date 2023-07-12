@@ -27,6 +27,10 @@ export const createVNode = (type, props?, children?) => {
   return vnode
 }
 
+export {
+  createVNode as createElementVNode,
+}
+
 export const createTextVnode = (text: string) => {
   return createVNode(Text, {}, text)
 }
