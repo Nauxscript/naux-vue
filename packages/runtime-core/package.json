@@ -2,7 +2,7 @@
   "name": "@naux-vue/runtime-core",
   "version": "1.0.0",
   "description": "@naux-vue/runtime-core",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
