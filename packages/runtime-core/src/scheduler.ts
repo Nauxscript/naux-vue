@@ -1,6 +1,6 @@
 const jobs: any[] = []
 
-export const nextTick = (fn) => {
+export const nextTick = (fn?) => {
   return fn ? Promise.resolve().then(fn) : Promise.resolve()
 }
 
