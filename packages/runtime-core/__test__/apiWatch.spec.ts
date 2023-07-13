@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { reactive } from '@naux-vue/reactivity'
+import { watchEffect } from './../src/apiWatch'
 import { nextTick } from './../src/scheduler'
 describe('api: watch', () => {
   it('effect', async () => {

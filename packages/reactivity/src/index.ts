@@ -6,6 +6,6 @@ export {
   isReadonly,
   isProxy,
 } from './reactive'
-export { effect } from './effect'
+export { effect, ReactiveEffect } from './effect'
 export { ref, proxyRefs } from './ref'
 export { computed } from './computed'
