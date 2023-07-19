@@ -41,7 +41,7 @@ describe('ref', () => {
     expect(dummy).toBe(2)
   })
 
-  it('isRef', () => {
+  test('isRef', () => {
     const a = ref(1)
     const user = reactive({
       age: 1,
@@ -51,7 +51,7 @@ describe('ref', () => {
     expect(isRef(user)).toBe(false)
   })
 
-  it('unRef', () => {
+  test('unRef', () => {
     const a = ref(1)
     expect(unRef(a)).toBe(1)
     expect(unRef(1)).toBe(1)

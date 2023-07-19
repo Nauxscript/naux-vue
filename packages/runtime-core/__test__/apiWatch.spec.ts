@@ -1,9 +1,9 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { reactive } from '@naux-vue/reactivity'
 import { watchEffect } from './../src/apiWatch'
 import { nextTick } from './../src/scheduler'
 describe('api: watch', () => {
-  it('effect', async () => {
+  test('effect', async () => {
     const state = reactive({
       count: 0,
     })

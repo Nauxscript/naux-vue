@@ -1,9 +1,9 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { baseParse } from '../src/parse'
 import { NodeTypes } from '../src/ast'
 describe('parse', () => {
   describe('parse text', () => {
-    it('simple text', () => {
+    test('simple text', () => {
       const template = 'simple text'
       const ast = baseParse(template)
       const textObj = ast.children[0]
@@ -12,7 +12,7 @@ describe('parse', () => {
         content: template,
       })
     })
-    it('interpolation', () => {
+    test('interpolation', () => {
       const template = '{{ message }}'
       const ast = baseParse(template)
       const interpolation = ast.children[0]
@@ -27,7 +27,7 @@ describe('parse', () => {
   })
 
   describe('parse element', () => {
-    it('simple element', () => {
+    test('simple element', () => {
       const template = '<div></div>'
       const ast = baseParse(template)
       const interpolation = ast.children[0]
@@ -40,7 +40,7 @@ describe('parse', () => {
   })
 
   describe('complex template: html element with text and interpolation', () => {
-    it('complex template: <div>hello, {{message}}</div>', () => {
+    test('complex template: <div>hello, {{message}}</div>', () => {
       const template = '<div>hello, {{message}}</div>'
       const ast = baseParse(template)
       const interpolation = ast.children[0]
@@ -63,7 +63,7 @@ describe('parse', () => {
       })
     })
 
-    it('complex template: nested html elements with interpolation', () => {
+    test('complex template: nested html elements with interpolation', () => {
       const template = '<div><p>hello, </p>{{message}}</div>'
       const ast = baseParse(template)
       const interpolation = ast.children[0]
@@ -90,7 +90,7 @@ describe('parse', () => {
       })
     })
 
-    it('complex template: nested html elements but without correct closed tag', () => {
+    test('complex template: nested html elements but without correct closed tag', () => {
       expect(() => {
         baseParse('<div><p></div>')
       }).toThrowError('missing closed tag: p')
