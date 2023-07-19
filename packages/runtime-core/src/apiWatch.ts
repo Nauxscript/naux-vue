@@ -11,4 +11,8 @@ export const watchEffect = (fn) => {
   }
 
   effect.run()
+
+  return () => {
+    effect.stop()
+  }
 }

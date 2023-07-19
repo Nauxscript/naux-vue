@@ -18,4 +18,18 @@ describe('api: watch', () => {
     await nextTick()
     expect(dummy).toBe(1)
   })
+  test('stopping the watcher (effect)', async () => {
+    const state = reactive({ count: 0 })
+    let dummy
+    const stop: any = watchEffect(() => {
+      dummy = state.count
+    })
+    expect(dummy).toBe(0)
+
+    stop()
+    state.count++
+    await nextTick()
+    // should not update
+    expect(dummy).toBe(0)
+  })
 })
